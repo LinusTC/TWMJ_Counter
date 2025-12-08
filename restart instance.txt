@@ -1,3 +1,6 @@
+WINDOWS: icacls twmj_api.pem /reset; icacls twmj_api.pem /inheritance:r /grant:r "$($env:USERNAME):(R)"
+
+
 cd into instance
 
 command = 'sudo vim /etc/nginx/sites-enabled/fastapi_nginx'
