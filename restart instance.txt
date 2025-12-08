@@ -1,5 +1,5 @@
 WINDOWS: icacls twmj_api.pem /reset; icacls twmj_api.pem /inheritance:r /grant:r "$($env:USERNAME):(R)"
-
+MAC: chmod 400 "twmj_api.pem"
 
 cd into instance
 
