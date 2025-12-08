@@ -1,9 +1,14 @@
+cd into instance
+
 command = 'sudo vim /etc/nginx/sites-enabled/fastapi_nginx'
 
 change ip to public IP of aws instance
 
 press esc, and type :wq to save
 
+sudo systemctl daemon-reload
 sudo service nginx restart
 
-then run as normal
+activate env: source twmj/bin/activate
+
+then can use uvicorn: python3 uvicorn twmj_api:twmj --port 8000

@@ -1,7 +1,7 @@
-import axios from 'axios'
+import axios from "axios";
 
 const twmj_api = axios.create({
-    baseURL: "https://36c0afc42eaa.ngrok-free.app",
-})
+    baseURL: "http://95.40.51.74",
+});
 
 export default twmj_api;
