@@ -1,0 +1,10 @@
+{
+    "expo": {
+        "name": "frontend",
+        "slug": "frontend",
+        "version": "1.0.0",
+        "orientation": "portrait",
+        "scheme": "twmjcounter",
+        "plugins": ["expo-sqlite"]
+    }
+}

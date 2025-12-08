@@ -1,0 +1,62 @@
+import { ValidatedDeck, CounterResult } from "@/types/counter";
+import { ZFB_DICT, WIND_DICT, MST_DICT } from "@/constants/dictionary";
+
+export function c_sister_pong(
+    curr_validated_tiles: ValidatedDeck,
+    template_values: Record<string, number>,
+    template_enabled_values: Record<string, boolean>
+): CounterResult {
+    let total_value = 0;
+    const log: string[] = [];
+    const sisters: Record<number, Set<string>> = {};
+
+    if (curr_validated_tiles.tiles) {
+        for (const item of curr_validated_tiles.tiles) {
+            const tiles = Array.isArray(item) ? item : [item];
+            if (
+                tiles.length === 3 &&
+                !ZFB_DICT.has(tiles[0]) &&
+                !WIND_DICT.has(tiles[0])
+            ) {
+                const numbers = new Set<number>();
+                const suit = tiles[0][0];
+
+                for (const tile of tiles) {
+                    const tile_number = MST_DICT[tile];
+                    numbers.add(tile_number);
+                }
+
+                if (numbers.size === 1) {
+                    const hashed = Array.from(numbers)[0];
+                    if (!sisters[hashed]) {
+                        sisters[hashed] = new Set<string>();
+                    }
+                    sisters[hashed].add(suit);
+                }
+            }
+        }
+    }
+
+    for (const [item, value] of Object.entries(sisters)) {
+        if (
+            value.size === 3 &&
+            template_enabled_values.three_sister_pong_value
+        ) {
+            const val = template_values.three_sister_pong_value || 0;
+            total_value += val;
+            log.push(`三兄弟${item}號牌 +${val}`);
+        } else if (
+            value.size === 2 &&
+            template_enabled_values.sister_pong_value
+        ) {
+            const val = template_values.sister_pong_value || 0;
+            total_value += val;
+            log.push(`二兄弟${item}號牌 +${val}`);
+        }
+    }
+
+    return {
+        value: total_value,
+        log: log.length > 0 ? log : null,
+    };
+}

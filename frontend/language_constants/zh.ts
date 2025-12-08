@@ -1,0 +1,28 @@
+const zh = {
+    welcomeTitle: "歡迎！",
+    welcomeSubtitle: "請輸入您的名字開始使用",
+    namePlaceholder: "您的名字",
+    continueButton: "繼續",
+    profileSettingsTitle: "設定",
+    themeLabel: "主題",
+    lightOption: "亮色",
+    darkOption: "暗色",
+    languageLabel: "語言",
+    englishOption: "英文",
+    chineseOption: "中文",
+    resetButton: "重置資料庫",
+    resetConfirmTitle: "重置資料庫",
+    resetConfirmMessage: "確定要重置所有設定與模版嗎？此操作無法復原。",
+    resetSuccessTitle: "完成",
+    resetSuccessMessage: "已成功重置資料庫。",
+    editNamePlaceholder: "輸入您的名字",
+    cancelButton: "取消",
+    confirmResetButton: "重置",
+    tabs_play: "開始",
+    tabs_templates: "模版",
+    tabs_camera: "相機",
+    tabs_profile: "個人資料",
+    tabs_history: "戰績",
+};
+
+export default zh;
