@@ -4,7 +4,7 @@ import {
     TemplateTransferRecord,
 } from "@/types/api";
 
-export const API_BASE_URL = "https://9d4e371de06c.ngrok-free.app";
+export const API_BASE_URL = "http://18.163.118.56";
 
 const twmj_api = axios.create({
     baseURL: API_BASE_URL,
