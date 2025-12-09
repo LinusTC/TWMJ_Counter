@@ -33,7 +33,7 @@ export function c_less_door(
         }
     }
 
-    if (doors.size > 2) {
+    if (doors.size != 2) {
         return {
             value: 0,
             log: null,
