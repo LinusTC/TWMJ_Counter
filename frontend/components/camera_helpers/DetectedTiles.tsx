@@ -15,7 +15,6 @@ export default function DetectedTiles({
         <View style={styles.detectionsSection}>
             <View style={styles.header}>
                 <Text style={styles.sectionTitle}>Detected Tiles</Text>
-                <View></View>
                 <Pressable style={styles.editButton} onPress={onEdit}>
                     <Ionicons name="pencil" size={20} color="#166b60" />
                 </Pressable>
