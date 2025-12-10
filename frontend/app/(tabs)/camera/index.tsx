@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import {
     View,
     StyleSheet,
@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
+import { useFocusEffect } from "@react-navigation/native";
 import GradientBackground from "@/components/GradientBackground";
 import {
     classifyImage,
@@ -17,7 +18,8 @@ import {
 import { optimizeImage, OptimizedImage } from "@/utils/camera_helpers";
 import { BaseCounter } from "@/components/deck_counter/base_counter";
 import { TileCount, base_results } from "@/types/counter";
-import { getDefaultScoringTemplate, saveGameHistory } from "@/utils/database";
+import { ScoringTemplate } from "@/types/database";
+import { getAllScoringTemplates, saveGameHistory } from "@/utils/database";
 import CameraViewComponent from "@/components/camera_helpers/CameraView";
 import DetectedTiles from "@/components/camera_helpers/DetectedTiles";
 import GameParameters from "@/components/camera_helpers/GameParameters";
@@ -38,6 +40,10 @@ export default function Camera() {
     const [eatZhuang, setEatZhuang] = useState<boolean>(false);
     const [isZhuang, setIsZhuang] = useState<boolean>(false);
     const [lumZhuang, setlumZhuang] = useState<number>(0);
+    const [templates, setTemplates] = useState<ScoringTemplate[]>([]);
+    const [selectedTemplateId, setSelectedTemplateId] = useState<number | null>(
+        null
+    );
     const cameraRef = useRef<CameraView>(null);
 
     useEffect(() => {
@@ -45,6 +51,26 @@ export default function Camera() {
             requestPermission();
         }
     }, [permission, requestPermission]);
+
+    useFocusEffect(
+        useCallback(() => {
+            const allTemplates = getAllScoringTemplates();
+            setTemplates(allTemplates);
+            if (allTemplates.length > 0) {
+                const currentStillExists = allTemplates.find(
+                    (t) => t.id === selectedTemplateId
+                );
+                if (!currentStillExists) {
+                    const defaultTemplate =
+                        allTemplates.find((template) => template.is_default) ??
+                        allTemplates[0];
+                    setSelectedTemplateId(defaultTemplate.id);
+                }
+            } else {
+                setSelectedTemplateId(null);
+            }
+        }, [selectedTemplateId])
+    );
 
     const hasPermission = permission?.granted;
     const hasDetections = detectedTiles.length > 0;
@@ -63,15 +89,12 @@ export default function Camera() {
     // Count tiles using BaseCounter when detectedTiles changes
     useEffect(() => {
         if (detectedTiles.length > 0) {
+            if (!selectedTemplateId) {
+                console.error("No scoring template selected");
+                return;
+            }
             try {
                 const tileCount = convertToTileCount(detectedTiles);
-                const defaultTemplate = getDefaultScoringTemplate();
-
-                if (!defaultTemplate) {
-                    console.error("No default template found");
-                    return;
-                }
-
                 const counter = new BaseCounter(
                     tileCount,
                     winnerSeat,
@@ -82,7 +105,7 @@ export default function Camera() {
                     isZhuang,
                     eatZhuang,
                     lumZhuang,
-                    defaultTemplate.id
+                    selectedTemplateId
                 );
 
                 const results = counter.base_count();
@@ -103,6 +126,7 @@ export default function Camera() {
         isZhuang,
         eatZhuang,
         lumZhuang,
+        selectedTemplateId,
     ]);
 
     const captureAndSendImage = async () => {
@@ -184,9 +208,8 @@ export default function Camera() {
             return;
         }
 
-        const defaultTemplate = getDefaultScoringTemplate();
-        if (!defaultTemplate) {
-            Alert.alert("Error", "No default template found.");
+        if (!selectedTemplateId) {
+            Alert.alert("Error", "No scoring template selected.");
             return;
         }
 
@@ -203,7 +226,7 @@ export default function Camera() {
                     winningTile,
                     myselfMo,
                     doorClear,
-                    defaultTemplate.id,
+                    selectedTemplateId,
                     countingResults
                 );
                 Alert.alert("Success", "Game saved to history!");
@@ -267,6 +290,8 @@ export default function Camera() {
                         isZhuang={isZhuang}
                         eatZhuang={eatZhuang}
                         lumZhuang={lumZhuang}
+                        templates={templates}
+                        selectedTemplateId={selectedTemplateId}
                         onWinnerSeatChange={setWinnerSeat}
                         onCurrentWindChange={setCurrentWind}
                         onWinningTileChange={setWinningTile}
@@ -275,6 +300,7 @@ export default function Camera() {
                         onIsZhuangChange={setIsZhuang}
                         onEatZhuangChange={setEatZhuang}
                         onLumZhuangChange={setlumZhuang}
+                        onTemplateSelect={setSelectedTemplateId}
                     />
 
                     <Results countingResults={countingResults} />

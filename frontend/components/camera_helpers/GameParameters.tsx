@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
     View,
     Text,
@@ -7,6 +8,7 @@ import {
     Switch,
 } from "react-native";
 import { WIND_DICT, SEAT_DICT, WIND_LABELS } from "@/constants/dictionary";
+import { ScoringTemplate } from "@/types/database";
 
 interface GameParametersProps {
     winnerSeat: number;
@@ -17,6 +19,8 @@ interface GameParametersProps {
     isZhuang: boolean;
     eatZhuang: boolean;
     lumZhuang: number;
+    templates: ScoringTemplate[];
+    selectedTemplateId: number | null;
     onWinnerSeatChange: (seat: number) => void;
     onCurrentWindChange: (wind: string) => void;
     onWinningTileChange: (tile: string) => void;
@@ -25,6 +29,7 @@ interface GameParametersProps {
     onIsZhuangChange: (value: boolean) => void;
     onEatZhuangChange: (value: boolean) => void;
     onLumZhuangChange: (value: number) => void;
+    onTemplateSelect: (templateId: number) => void;
 }
 
 export default function GameParameters({
@@ -36,6 +41,8 @@ export default function GameParameters({
     isZhuang,
     eatZhuang,
     lumZhuang,
+    templates,
+    selectedTemplateId,
     onWinnerSeatChange,
     onCurrentWindChange,
     onWinningTileChange,
@@ -44,10 +51,80 @@ export default function GameParameters({
     onIsZhuangChange,
     onEatZhuangChange,
     onLumZhuangChange,
+    onTemplateSelect,
 }: GameParametersProps) {
+    const [showTemplates, setShowTemplates] = useState(false);
+    const selectedTemplate = templates.find(
+        (template) => template.id === selectedTemplateId
+    );
+    const templateButtonLabel = selectedTemplate
+        ? selectedTemplate.name
+        : templates.length
+        ? "Select Template"
+        : "No templates available";
+
     return (
         <View style={styles.parametersSection}>
             <Text style={styles.sectionTitle}>Game Parameters</Text>
+            <View style={styles.templateSelector}>
+                <Text style={styles.paramLabel}>Scoring Template:</Text>
+                <Pressable
+                    style={[
+                        styles.templateButton,
+                        !templates.length && styles.templateButtonDisabled,
+                    ]}
+                    onPress={() => setShowTemplates((prev) => !prev)}
+                    disabled={!templates.length}
+                >
+                    <Text
+                        style={[
+                            styles.templateButtonText,
+                            !selectedTemplate &&
+                                templates.length > 0 &&
+                                styles.templateButtonTextMuted,
+                        ]}
+                        numberOfLines={1}
+                    >
+                        {templateButtonLabel}
+                    </Text>
+                </Pressable>
+            </View>
+            {showTemplates && templates.length > 0 && (
+                <View style={styles.dropdownContainer}>
+                    {templates.map((template) => {
+                        const isActive = template.id === selectedTemplateId;
+                        return (
+                            <Pressable
+                                key={template.id}
+                                style={[
+                                    styles.dropdownItem,
+                                    isActive && styles.dropdownItemActive,
+                                ]}
+                                onPress={() => {
+                                    onTemplateSelect(template.id);
+                                    setShowTemplates(false);
+                                }}
+                            >
+                                <Text
+                                    style={[
+                                        styles.dropdownItemText,
+                                        isActive &&
+                                            styles.dropdownItemTextActive,
+                                    ]}
+                                    numberOfLines={1}
+                                >
+                                    {template.name}
+                                </Text>
+                                {template.is_default && (
+                                    <Text style={styles.dropdownBadge}>
+                                        Default
+                                    </Text>
+                                )}
+                            </Pressable>
+                        );
+                    })}
+                </View>
+            )}
 
             <View style={styles.paramRow}>
                 <Text style={styles.paramLabel}>Winner Seat:</Text>
@@ -274,5 +351,74 @@ const styles = StyleSheet.create({
         color: "#0a3d34",
         minWidth: 30,
         textAlign: "center",
+    },
+    templateSelector: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        gap: 12,
+        paddingBottom: 4,
+    },
+    templateButton: {
+        flex: 1,
+        paddingVertical: 10,
+        paddingHorizontal: 12,
+        borderRadius: 8,
+        borderWidth: 1,
+        borderColor: "#166b60",
+        backgroundColor: "#fff",
+        alignItems: "center",
+    },
+    templateButtonDisabled: {
+        opacity: 0.5,
+    },
+    templateButtonText: {
+        fontSize: 15,
+        fontWeight: "600",
+        color: "#166b60",
+    },
+    templateButtonTextMuted: {
+        color: "#6b7280",
+    },
+    dropdownContainer: {
+        marginBottom: 8,
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: "rgba(0,0,0,0.1)",
+        backgroundColor: "#fff",
+        overflow: "hidden",
+    },
+    dropdownItem: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        paddingHorizontal: 12,
+        paddingVertical: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: "rgba(0,0,0,0.05)",
+    },
+    dropdownItemActive: {
+        backgroundColor: "rgba(22, 107, 96, 0.1)",
+    },
+    dropdownItemText: {
+        flex: 1,
+        fontSize: 15,
+        color: "#0a3d34",
+        marginRight: 8,
+    },
+    dropdownItemTextActive: {
+        fontWeight: "700",
+        color: "#166b60",
+    },
+    dropdownBadge: {
+        alignSelf: "flex-start",
+        fontSize: 12,
+        fontWeight: "600",
+        color: "#166b60",
+        backgroundColor: "rgba(22, 107, 96, 0.15)",
+        paddingHorizontal: 8,
+        paddingVertical: 4,
+        borderRadius: 8,
+        textTransform: "uppercase",
     },
 });
