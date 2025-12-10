@@ -3,6 +3,8 @@ MAC: chmod 400 "twmj_api.pem"
 
 cd into instance
 
+To check size: df -h
+
 command = 'sudo vim /etc/nginx/sites-enabled/fastapi_nginx'
 
 change ip to public IP of aws instance
