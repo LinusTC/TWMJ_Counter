@@ -26,7 +26,7 @@ import { c_sister_pong } from "./counter_helpers/c_sister_pong";
 import { c_dui_dui_or_ping_or_kang_kang_hu } from "./counter_helpers/c_dui_dui_or_ping_or_kang_kang_hu";
 import { c_dragons } from "./counter_helpers/c_dragons";
 import { getTemplateById } from "@/utils/database";
-import { ScoringTemplate } from "@/types/database";
+import { c_zhuang_jia } from "./counter_helpers/c_zhuang_jia";
 
 export class BaseCounter {
     private winner_tiles: TileCount;
@@ -37,6 +37,7 @@ export class BaseCounter {
     private door_clear: boolean;
     private is_zhuang_jia: boolean;
     private eat_zhuang_jia: boolean;
+    private lum_zhuang: number;
     private deck_validator: DeckValidator;
     private valid: boolean;
     private total_number_of_valid_decks: number;
@@ -54,6 +55,7 @@ export class BaseCounter {
         doorclear: boolean,
         is_zhuang_jia: boolean,
         eat_zhuang_jia: boolean,
+        lum_zhuang: number,
         template_used_id: number
     ) {
         this.winner_tiles = winner_tiles;
@@ -63,7 +65,8 @@ export class BaseCounter {
         this.myself_mo = myself_mo;
         this.door_clear = doorclear;
         this.is_zhuang_jia = is_zhuang_jia;
-        this. eat_zhuang_jia = eat_zhuang_jia;
+        this.eat_zhuang_jia = eat_zhuang_jia;
+        this.lum_zhuang = lum_zhuang;
         this.template_used_id = template_used_id;
         this.deck_validator = new DeckValidator(this.winner_tiles);
         this.valid = this.deck_validator.fullCheck();
@@ -86,8 +89,8 @@ export class BaseCounter {
         }
         const template_values: Record<string, number> = template.rules;
         const template_enabled_values: Record<string, boolean> = template.rules_enabled;
-        const base_value: number = template_values.base_value
-        const multiplier: number = template_values.multiplier_value
+        const base_value: number = template_values.base_value;
+        const multiplier: number = template_values.multiplier_value;
 
         let max_value: number = 0;
         let max_logs: string[] = [];
@@ -140,6 +143,17 @@ export class BaseCounter {
             );
             temp_value += door_clear_zimo_result.value;
             add_to_log(door_clear_zimo_result.log, temp_logs);
+
+            //Check Zhuang Jia
+            const zhuang_jia_result = c_zhuang_jia(
+                this.is_zhuang_jia,
+                this.eat_zhuang_jia,
+                this.lum_zhuang,
+                template_values,
+                template_enabled_values
+            );
+            temp_value += zhuang_jia_result.value;
+            add_to_log(zhuang_jia_result.log, temp_logs);
 
             //Check flower
             const flower_result = c_flower(

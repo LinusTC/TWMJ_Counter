@@ -151,6 +151,7 @@ export default function Profile() {
                     <Pressable
                         style={styles.profileIconContainer}
                         onPress={handleProfilePicPress}
+                        hitSlop={8}
                     >
                         {profilePic ? (
                             <Image
@@ -164,6 +165,13 @@ export default function Profile() {
                                 color="#166b60"
                             />
                         )}
+                        <View style={styles.editIconBadge}>
+                            <Ionicons
+                                name="create-outline"
+                                size={16}
+                                color="#fff"
+                            />
+                        </View>
                     </Pressable>
 
                     {isEditingName ? (
@@ -192,66 +200,6 @@ export default function Profile() {
                     <Text style={styles.sectionTitle}>
                         {translations.profileSettingsTitle}
                     </Text>
-
-                    {/* Theme Setting */}
-                    <View style={styles.settingItem}>
-                        <Text style={styles.settingLabel}>
-                            {translations.themeLabel}
-                        </Text>
-                        <View style={styles.optionsRow}>
-                            <Pressable
-                                style={[
-                                    styles.optionButton,
-                                    theme === "light" &&
-                                        styles.optionButtonActive,
-                                ]}
-                                onPress={() => handleThemeChange("light")}
-                            >
-                                <Ionicons
-                                    name="sunny"
-                                    size={20}
-                                    color={
-                                        theme === "light" ? "#fff" : "#166b60"
-                                    }
-                                />
-                                <Text
-                                    style={[
-                                        styles.optionText,
-                                        theme === "light" &&
-                                            styles.optionTextActive,
-                                    ]}
-                                >
-                                    {translations.lightOption}
-                                </Text>
-                            </Pressable>
-
-                            <Pressable
-                                style={[
-                                    styles.optionButton,
-                                    theme === "dark" &&
-                                        styles.optionButtonActive,
-                                ]}
-                                onPress={() => handleThemeChange("dark")}
-                            >
-                                <Ionicons
-                                    name="moon"
-                                    size={20}
-                                    color={
-                                        theme === "dark" ? "#fff" : "#166b60"
-                                    }
-                                />
-                                <Text
-                                    style={[
-                                        styles.optionText,
-                                        theme === "dark" &&
-                                            styles.optionTextActive,
-                                    ]}
-                                >
-                                    {translations.darkOption}
-                                </Text>
-                            </Pressable>
-                        </View>
-                    </View>
 
                     {/* Language Setting */}
                     <View style={styles.settingItem}>
@@ -331,6 +279,7 @@ const styles = StyleSheet.create({
     },
     profileIconContainer: {
         flexShrink: 0,
+        position: "relative",
     },
     profileImage: {
         width: 100,
@@ -338,6 +287,17 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         borderWidth: 3,
         borderColor: "#166b60",
+    },
+    editIconBadge: {
+        position: "absolute",
+        bottom: 0,
+        right: 0,
+        width: 28,
+        height: 28,
+        borderRadius: 14,
+        backgroundColor: "#166b60",
+        justifyContent: "center",
+        alignItems: "center",
     },
     userName: {
         flex: 1,

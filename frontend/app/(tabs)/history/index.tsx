@@ -278,12 +278,23 @@ export default function History() {
                                                 >
                                                     Results
                                                 </Text>
-                                                <Text
-                                                    style={styles.totalPoints}
-                                                >
-                                                    Total: {game.results.value}{" "}
-                                                    points
-                                                </Text>
+
+                                                <View style={styles.resultItem}>
+                                                    <Text
+                                                        style={
+                                                            styles.resultLabel
+                                                        }
+                                                    >
+                                                        Total Value:
+                                                    </Text>
+                                                    <Text
+                                                        style={
+                                                            styles.resultValue
+                                                        }
+                                                    >
+                                                        {game.results.value}
+                                                    </Text>
+                                                </View>
                                                 {game.results.log.map(
                                                     (logEntry, index) => (
                                                         <Text
@@ -447,6 +458,25 @@ const styles = StyleSheet.create({
     paramValue: {
         fontSize: 16,
         color: "#333",
+    },
+    resultItem: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        paddingVertical: 8,
+        paddingHorizontal: 12,
+        backgroundColor: "#f0f8f7",
+        borderRadius: 8,
+    },
+    resultLabel: {
+        fontSize: 16,
+        fontWeight: "600",
+        color: "#0a3d34",
+    },
+    resultValue: {
+        fontSize: 20,
+        fontWeight: "700",
+        color: "#166b60",
     },
     totalPoints: {
         fontSize: 20,

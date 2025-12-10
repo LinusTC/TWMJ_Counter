@@ -42,22 +42,34 @@ export default function TemplateModal({
         () =>
             [...valueConstants]
                 .filter(
-                    (c) => c.key !== "base_value" && c.key !== "multiplier_value"
+                    (c) =>
+                        c.key !== "base_value" && c.key !== "multiplier_value"
                 )
                 .sort((a, b) => a.label.localeCompare(b.label)),
         []
     );
+
     const [formValues, setFormValues] = useState<Record<string, string>>({});
     const [enabledValues, setEnabledValues] = useState<Record<string, boolean>>(
         {}
     );
     const [templateName, setTemplateName] = useState("");
+    const [searchQuery, setSearchQuery] = useState("");
+
+    const filteredConstants = useMemo(
+        () =>
+            sortedConstants.filter((c) =>
+                c.label.toLowerCase().includes(searchQuery.toLowerCase())
+            ),
+        [sortedConstants, searchQuery]
+    );
 
     useEffect(() => {
         if (!template) {
             setFormValues({});
             setEnabledValues({});
             setTemplateName("");
+            setSearchQuery("");
             return;
         }
         setTemplateName(template.name);
@@ -136,7 +148,9 @@ export default function TemplateModal({
         setFormValues(newFormValues);
         setEnabledValues(newEnabledValues);
 
-        alert(`Added ${missingKeys.length} new value(s) to template. Don't forget to save!`);
+        alert(
+            `Added ${missingKeys.length} new value(s) to template. Don't forget to save!`
+        );
     }
 
     if (!isVisible) {
@@ -185,7 +199,26 @@ export default function TemplateModal({
                     {baseConstants.length > 0 && (
                         <View style={styles.divider} />
                     )}
-                    {sortedConstants.map((constant) => {
+                    <View style={styles.searchContainer}>
+                        <Ionicons name="search" size={18} color="#999" />
+                        <TextInput
+                            style={styles.searchInput}
+                            value={searchQuery}
+                            onChangeText={setSearchQuery}
+                            placeholder="Search rules..."
+                            placeholderTextColor="#999"
+                        />
+                        {searchQuery.length > 0 && (
+                            <Pressable onPress={() => setSearchQuery("")}>
+                                <Ionicons
+                                    name="close-circle"
+                                    size={18}
+                                    color="#999"
+                                />
+                            </Pressable>
+                        )}
+                    </View>
+                    {filteredConstants.map((constant) => {
                         const key = constant.key as string;
                         const value = formValues[key] ?? "";
                         const enabled = enabledValues[key] ?? true;
@@ -198,7 +231,7 @@ export default function TemplateModal({
                                             handleToggleEnabled(key, val)
                                         }
                                         trackColor={{ true: "#019eff" }}
-                                        thumbColor="#ffffff"
+                                        ios_backgroundColor="#d1d5db"
                                     />
                                     <Text
                                         style={[
@@ -227,9 +260,14 @@ export default function TemplateModal({
                     })}
                 </ScrollView>
                 <View style={styles.buttonRow}>
-                    <Pressable style={styles.syncButton} onPress={handleSyncNewValues}>
+                    <Pressable
+                        style={styles.syncButton}
+                        onPress={handleSyncNewValues}
+                    >
                         <Ionicons name="sync" size={18} color="#166b60" />
-                        <Text style={styles.syncButtonText}>Get latest rules</Text>
+                        <Text style={styles.syncButtonText}>
+                            Get latest rules
+                        </Text>
                     </Pressable>
                     <Pressable style={styles.saveButton} onPress={handleSave}>
                         <Text style={styles.saveButtonText}>Save</Text>
@@ -335,6 +373,21 @@ const styles = StyleSheet.create({
         height: 1,
         backgroundColor: "#166b60",
         marginVertical: 16,
+    },
+    searchContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 8,
+        paddingHorizontal: 12,
+        paddingVertical: 10,
+        backgroundColor: "#f5f5f5",
+        borderRadius: 8,
+        marginBottom: 12,
+    },
+    searchInput: {
+        flex: 1,
+        fontSize: 15,
+        color: "#1f1f1f",
     },
     buttonRow: {
         marginTop: 12,

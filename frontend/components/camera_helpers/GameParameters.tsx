@@ -14,11 +14,17 @@ interface GameParametersProps {
     winningTile: string;
     myselfMo: boolean;
     doorClear: boolean;
+    isZhuang: boolean;
+    eatZhuang: boolean;
+    lumZhuang: number;
     onWinnerSeatChange: (seat: number) => void;
     onCurrentWindChange: (wind: string) => void;
     onWinningTileChange: (tile: string) => void;
     onMyselfMoChange: (value: boolean) => void;
     onDoorClearChange: (value: boolean) => void;
+    onIsZhuangChange: (value: boolean) => void;
+    onEatZhuangChange: (value: boolean) => void;
+    onLumZhuangChange: (value: number) => void;
 }
 
 export default function GameParameters({
@@ -27,11 +33,17 @@ export default function GameParameters({
     winningTile,
     myselfMo,
     doorClear,
+    isZhuang,
+    eatZhuang,
+    lumZhuang,
     onWinnerSeatChange,
     onCurrentWindChange,
     onWinningTileChange,
     onMyselfMoChange,
     onDoorClearChange,
+    onIsZhuangChange,
+    onEatZhuangChange,
+    onLumZhuangChange,
 }: GameParametersProps) {
     return (
         <View style={styles.parametersSection}>
@@ -111,7 +123,7 @@ export default function GameParameters({
                     value={myselfMo}
                     onValueChange={onMyselfMoChange}
                     trackColor={{ true: "#166b60", false: "#d1d5db" }}
-                    thumbColor="#ffffff"
+                    ios_backgroundColor="#d1d5db"
                 />
             </View>
 
@@ -121,8 +133,57 @@ export default function GameParameters({
                     value={doorClear}
                     onValueChange={onDoorClearChange}
                     trackColor={{ true: "#166b60", false: "#d1d5db" }}
-                    thumbColor="#ffffff"
+                    ios_backgroundColor="#d1d5db"
                 />
+            </View>
+
+            <View style={styles.paramRow}>
+                <Text style={styles.paramLabel}>Is Dealer (莊家):</Text>
+                <Switch
+                    value={isZhuang}
+                    onValueChange={(value) => {
+                        onIsZhuangChange(value);
+                        if (value) onEatZhuangChange(false);
+                    }}
+                    trackColor={{ true: "#166b60", false: "#d1d5db" }}
+                    ios_backgroundColor="#d1d5db"
+                />
+            </View>
+
+            <View style={styles.paramRow}>
+                <Text style={styles.paramLabel}>Eat Dealer (吃莊):</Text>
+                <Switch
+                    value={eatZhuang}
+                    onValueChange={(value) => {
+                        onEatZhuangChange(value);
+                        if (value) onIsZhuangChange(false);
+                    }}
+                    trackColor={{ true: "#166b60", false: "#d1d5db" }}
+                    ios_backgroundColor="#d1d5db"
+                />
+            </View>
+
+            <View style={styles.paramRow}>
+                <Text style={styles.paramLabel}>
+                    Consecutive Dealer (連莊):
+                </Text>
+                <View style={styles.numberWheelContainer}>
+                    <Pressable
+                        style={styles.numberButton}
+                        onPress={() =>
+                            onLumZhuangChange(Math.max(0, lumZhuang - 1))
+                        }
+                    >
+                        <Text style={styles.numberButtonText}>−</Text>
+                    </Pressable>
+                    <Text style={styles.numberDisplay}>{lumZhuang}</Text>
+                    <Pressable
+                        style={styles.numberButton}
+                        onPress={() => onLumZhuangChange(lumZhuang + 1)}
+                    >
+                        <Text style={styles.numberButtonText}>+</Text>
+                    </Pressable>
+                </View>
             </View>
         </View>
     );
@@ -188,5 +249,30 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: "500",
         color: "#0a3d34",
+    },
+    numberWheelContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 3,
+    },
+    numberButton: {
+        width: 32,
+        height: 32,
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 6,
+        backgroundColor: "#166b60",
+    },
+    numberButtonText: {
+        fontSize: 18,
+        fontWeight: "600",
+        color: "#fff",
+    },
+    numberDisplay: {
+        fontSize: 16,
+        fontWeight: "600",
+        color: "#0a3d34",
+        minWidth: 30,
+        textAlign: "center",
     },
 });

@@ -35,6 +35,9 @@ export default function Camera() {
     const [winningTile, setWinningTile] = useState<string>("");
     const [myselfMo, setMyselfMo] = useState<boolean>(false);
     const [doorClear, setDoorClear] = useState<boolean>(false);
+    const [eatZhuang, setEatZhuang] = useState<boolean>(false);
+    const [isZhuang, setIsZhuang] = useState<boolean>(false);
+    const [lumZhuang, setlumZhuang] = useState<number>(0);
     const cameraRef = useRef<CameraView>(null);
 
     useEffect(() => {
@@ -76,6 +79,9 @@ export default function Camera() {
                     winningTile,
                     myselfMo,
                     doorClear,
+                    isZhuang,
+                    eatZhuang,
+                    lumZhuang,
                     defaultTemplate.id
                 );
 
@@ -94,6 +100,9 @@ export default function Camera() {
         winningTile,
         myselfMo,
         doorClear,
+        isZhuang,
+        eatZhuang,
+        lumZhuang,
     ]);
 
     const captureAndSendImage = async () => {
@@ -255,19 +264,30 @@ export default function Camera() {
                         winningTile={winningTile}
                         myselfMo={myselfMo}
                         doorClear={doorClear}
+                        isZhuang={isZhuang}
+                        eatZhuang={eatZhuang}
+                        lumZhuang={lumZhuang}
                         onWinnerSeatChange={setWinnerSeat}
                         onCurrentWindChange={setCurrentWind}
                         onWinningTileChange={setWinningTile}
                         onMyselfMoChange={setMyselfMo}
                         onDoorClearChange={setDoorClear}
+                        onIsZhuangChange={setIsZhuang}
+                        onEatZhuangChange={setEatZhuang}
+                        onLumZhuangChange={setlumZhuang}
                     />
 
                     <Results countingResults={countingResults} />
-                    {capturedImage && detectedTiles.length > 0 && countingResults && (
-                        <Pressable style={styles.saveButton} onPress={saveGameToDB}>
-                            <Text style={styles.saveButtonText}>Save</Text>
-                        </Pressable>
-                    )}
+                    {capturedImage &&
+                        detectedTiles.length > 0 &&
+                        countingResults && (
+                            <Pressable
+                                style={styles.saveButton}
+                                onPress={saveGameToDB}
+                            >
+                                <Text style={styles.saveButtonText}>Save</Text>
+                            </Pressable>
+                        )}
                 </ScrollView>
             </View>
         </GradientBackground>

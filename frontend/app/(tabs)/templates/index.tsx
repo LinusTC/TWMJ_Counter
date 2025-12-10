@@ -439,7 +439,7 @@ export default function Templates() {
                                     onPress={() => openTemplateModal(template)}
                                 >
                                     <View style={styles.cardHeader}>
-                                        <View style={styles.cardHeaderLeft}>
+                                        <View style={styles.cardHeaderLeftSideContent}>
                                             <View style={styles.header}>
                                                 <Text
                                                     style={styles.templateName}
@@ -724,13 +724,14 @@ const styles = StyleSheet.create({
         alignItems: "flex-start",
         marginBottom: 8,
     },
-    cardHeaderLeft: {
+    cardHeaderLeftSideContent: {
         flex: 1,
         gap: 4,
     },
     header: {
         flexDirection: "row",
         alignItems: "center",
+        gap: 2,
     },
     templateName: {
         fontSize: 18,

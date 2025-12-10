@@ -15,8 +15,9 @@ export default function DetectedTiles({
         <View style={styles.detectionsSection}>
             <View style={styles.header}>
                 <Text style={styles.sectionTitle}>Detected Tiles</Text>
-                <Pressable style={styles.editButton} onPress={onEdit}>
-                    <Ionicons name="pencil" size={20} color="#166b60" />
+                <Pressable style={styles.manualEditButton} onPress={onEdit}>
+                    <Ionicons name="pencil" size={18} color="#166b60" />
+                    <Text style={styles.manualEditText}>Edit</Text>
                 </Pressable>
             </View>
             {detectedTiles.length > 0 ? (
@@ -52,12 +53,21 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "space-between",
     },
-    editButton: {
-        padding: 8,
-        borderRadius: 8,
+    manualEditButton: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 4,
+        paddingVertical: 6,
+        paddingHorizontal: 12,
+        borderRadius: 6,
         backgroundColor: "#fff",
-        borderWidth: 2,
+        borderWidth: 1.5,
         borderColor: "#166b60",
+    },
+    manualEditText: {
+        fontSize: 14,
+        fontWeight: "600",
+        color: "#166b60",
     },
     sectionTitle: {
         fontSize: 18,

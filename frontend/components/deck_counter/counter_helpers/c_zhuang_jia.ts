@@ -1,32 +1,38 @@
 import { ValidatedDeck, CounterResult } from "@/types/counter";
-import { ZFB_DICT, WIND_DICT } from "@/constants/dictionary";
 
 export function c_zhuang_jia(
-    curr_validated_tiles: ValidatedDeck,
+    is_zhuang: boolean,
+    eat_zhuang: boolean,
+    lum_zhuang: number,
     template_values: Record<string, number>,
     template_enabled_values: Record<string, boolean>
 ): CounterResult {
-    if (!template_enabled_values.only_fan_value) {
-        return { value: 0, log: null };
-    }
+    let temp_value: number = 0;
+    let temp_logs: string[] = [];
 
-    if (curr_validated_tiles.tiles) {
-        for (const item of curr_validated_tiles.tiles) {
-            const tile_group = Array.isArray(item) ? item : [item];
-            for (const tile of tile_group) {
-                if (!ZFB_DICT.has(tile) && !WIND_DICT.has(tile)) {
-                    return {
-                        value: 0,
-                        log: null,
-                    };
-                }
-            }
+    if (is_zhuang) {
+        if (template_enabled_values.zhuang_jia_value) {
+            temp_value += template_values.zhuang_jia_value;
+            temp_logs.push(`莊家 +${template_values.zhuang_jia_value}`);
+        }
+        if (template_enabled_values.multiple_zhuang_value && lum_zhuang > 0) {
+            const lum_zhuang_total =
+                lum_zhuang * template_values.multiple_zhuang_value;
+            temp_value += lum_zhuang_total;
+            temp_logs.push(`連莊 ${lum_zhuang}x +${lum_zhuang_total}`);
         }
     }
-
-    const only_fan_value = template_values.only_fan_value || 0;
-    return {
-        value: only_fan_value,
-        log: `全番子 +${only_fan_value}`,
-    };
+    if (eat_zhuang) {
+        if (template_enabled_values.zhuang_jia_value) {
+            temp_value += template_values.zhuang_jia_value;
+            temp_logs.push(`食莊家 +${template_values.zhuang_jia_value}`);
+        }
+        if (template_enabled_values.multiple_zhuang_value && lum_zhuang > 0) {
+            const lum_zhuang_total =
+                lum_zhuang * template_values.multiple_zhuang_value;
+            temp_value += lum_zhuang_total;
+            temp_logs.push(`連莊 ${lum_zhuang}x +${lum_zhuang_total}`);
+        }
+    }
+    return { value: temp_value, log: temp_logs };
 }
