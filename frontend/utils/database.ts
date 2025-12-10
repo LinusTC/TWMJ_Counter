@@ -1,7 +1,10 @@
 import * as SQLite from "expo-sqlite";
 import { ScoringTemplate } from "@/types/database";
 import { ValueConstant, base_results } from "@/types/counter";
-import { defaultValues } from "@/constants/value_constants";
+import {
+    defaultValues,
+    defaultEnabledValues,
+} from "@/constants/value_constants";
 
 const db = SQLite.openDatabaseSync("twmj.db");
 
@@ -93,14 +96,10 @@ export function initDb() {
         "SELECT COUNT(*) as count FROM scoring_templates"
     );
     if ((existingRules as any).count === 0) {
-        const defaultEnabled = Object.keys(defaultValues).reduce((acc, key) => {
-            acc[key] = true;
-            return acc;
-        }, {} as Record<string, boolean>);
         saveScoringTemplate(
             "Default Rules",
             defaultValues,
-            defaultEnabled,
+            defaultEnabledValues,
             true
         );
     }

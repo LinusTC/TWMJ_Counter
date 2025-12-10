@@ -1,10 +1,25 @@
 import { ValueConstant } from "@/types/counter";
 
 export const valueConstants: ValueConstant[] = [
-    { key: "base_value", label: "base", defaultValue: 0 },
-    { key: "multiplier_value", label: "multiplier", defaultValue: 1 },
-    { key: "zhuang_jia_value", label: "zhuang_jia", defaultValue: 2 },
-    { key: "multiple_zhuang_value", label: "multiple_zhuang", defaultValue: 2 },
+    { key: "base_value", label: "base", defaultValue: 0, defaultEnabled: true },
+    {
+        key: "multiplier_value",
+        label: "multiplier",
+        defaultValue: 1,
+        defaultEnabled: true,
+    },
+    {
+        key: "zhuang_value",
+        label: "zhuang",
+        defaultValue: 2,
+        defaultEnabled: true,
+    },
+    {
+        key: "multiple_zhuang_value",
+        label: "multiple_zhuang",
+        defaultValue: 2,
+        defaultEnabled: true,
+    },
     {
         key: "flower_value",
         label: "Flower",
@@ -348,3 +363,9 @@ export const defaultValues = valueConstants.reduce((acc, item) => {
     acc[item.key] = item.defaultValue;
     return acc;
 }, {} as Record<string, number>);
+
+// Create a defaultEnabledValues object from valueConstants
+export const defaultEnabledValues = valueConstants.reduce((acc, item) => {
+    acc[item.key] = item.defaultEnabled ?? true;
+    return acc;
+}, {} as Record<string, boolean>);

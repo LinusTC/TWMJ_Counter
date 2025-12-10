@@ -26,7 +26,7 @@ import { c_sister_pong } from "./counter_helpers/c_sister_pong";
 import { c_dui_dui_or_ping_or_kang_kang_hu } from "./counter_helpers/c_dui_dui_or_ping_or_kang_kang_hu";
 import { c_dragons } from "./counter_helpers/c_dragons";
 import { getTemplateById } from "@/utils/database";
-import { c_zhuang_jia } from "./counter_helpers/c_zhuang_jia";
+import { c_zhuang } from "./counter_helpers/c_zhuang";
 
 export class BaseCounter {
     private winner_tiles: TileCount;
@@ -35,8 +35,8 @@ export class BaseCounter {
     private winning_tile: string;
     private myself_mo: boolean;
     private door_clear: boolean;
-    private is_zhuang_jia: boolean;
-    private eat_zhuang_jia: boolean;
+    private is_zhuang: boolean;
+    private eat_zhuang: boolean;
     private lum_zhuang: number;
     private deck_validator: DeckValidator;
     private valid: boolean;
@@ -53,8 +53,8 @@ export class BaseCounter {
         winning_tile: string,
         myself_mo: boolean,
         doorclear: boolean,
-        is_zhuang_jia: boolean,
-        eat_zhuang_jia: boolean,
+        is_zhuang: boolean,
+        eat_zhuang: boolean,
         lum_zhuang: number,
         template_used_id: number
     ) {
@@ -64,8 +64,8 @@ export class BaseCounter {
         this.winning_tile = winning_tile;
         this.myself_mo = myself_mo;
         this.door_clear = doorclear;
-        this.is_zhuang_jia = is_zhuang_jia;
-        this.eat_zhuang_jia = eat_zhuang_jia;
+        this.is_zhuang = is_zhuang;
+        this.eat_zhuang = eat_zhuang;
         this.lum_zhuang = lum_zhuang;
         this.template_used_id = template_used_id;
         this.deck_validator = new DeckValidator(this.winner_tiles);
@@ -88,7 +88,8 @@ export class BaseCounter {
             );
         }
         const template_values: Record<string, number> = template.rules;
-        const template_enabled_values: Record<string, boolean> = template.rules_enabled;
+        const template_enabled_values: Record<string, boolean> =
+            template.rules_enabled;
         const base_value: number = template_values.base_value;
         const multiplier: number = template_values.multiplier_value;
 
@@ -145,15 +146,15 @@ export class BaseCounter {
             add_to_log(door_clear_zimo_result.log, temp_logs);
 
             //Check Zhuang Jia
-            const zhuang_jia_result = c_zhuang_jia(
-                this.is_zhuang_jia,
-                this.eat_zhuang_jia,
+            const zhuang_result = c_zhuang(
+                this.is_zhuang,
+                this.eat_zhuang,
                 this.lum_zhuang,
                 template_values,
                 template_enabled_values
             );
-            temp_value += zhuang_jia_result.value;
-            add_to_log(zhuang_jia_result.log, temp_logs);
+            temp_value += zhuang_result.value;
+            add_to_log(zhuang_result.log, temp_logs);
 
             //Check flower
             const flower_result = c_flower(

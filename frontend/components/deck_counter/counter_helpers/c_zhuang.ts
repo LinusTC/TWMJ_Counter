@@ -1,6 +1,6 @@
 import { ValidatedDeck, CounterResult } from "@/types/counter";
 
-export function c_zhuang_jia(
+export function c_zhuang(
     is_zhuang: boolean,
     eat_zhuang: boolean,
     lum_zhuang: number,
@@ -11,9 +11,9 @@ export function c_zhuang_jia(
     let temp_logs: string[] = [];
 
     if (is_zhuang) {
-        if (template_enabled_values.zhuang_jia_value) {
-            temp_value += template_values.zhuang_jia_value;
-            temp_logs.push(`莊家 +${template_values.zhuang_jia_value}`);
+        if (template_enabled_values.zhuang_value) {
+            temp_value += template_values.zhuang_value;
+            temp_logs.push(`莊家 +${template_values.zhuang_value}`);
         }
         if (template_enabled_values.multiple_zhuang_value && lum_zhuang > 0) {
             const lum_zhuang_total =
@@ -23,9 +23,9 @@ export function c_zhuang_jia(
         }
     }
     if (eat_zhuang) {
-        if (template_enabled_values.zhuang_jia_value) {
-            temp_value += template_values.zhuang_jia_value;
-            temp_logs.push(`食莊家 +${template_values.zhuang_jia_value}`);
+        if (template_enabled_values.zhuang_value) {
+            temp_value += template_values.zhuang_value;
+            temp_logs.push(`食莊家 +${template_values.zhuang_value}`);
         }
         if (template_enabled_values.multiple_zhuang_value && lum_zhuang > 0) {
             const lum_zhuang_total =
