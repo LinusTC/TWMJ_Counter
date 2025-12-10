@@ -3,6 +3,8 @@ import { ValueConstant } from "@/types/counter";
 export const valueConstants: ValueConstant[] = [
     { key: "base_value", label: "base", defaultValue: 0 },
     { key: "multiplier_value", label: "multiplier", defaultValue: 1 },
+    { key: "zhuang_jia_value", label: "zhuang_jia", defaultValue: 2 },
+    { key: "multiple_zhuang_value", label: "multiple_zhuang", defaultValue: 2 },
     {
         key: "flower_value",
         label: "Flower",

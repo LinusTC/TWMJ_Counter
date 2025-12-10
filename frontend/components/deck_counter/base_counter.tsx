@@ -35,6 +35,8 @@ export class BaseCounter {
     private winning_tile: string;
     private myself_mo: boolean;
     private door_clear: boolean;
+    private is_zhuang_jia: boolean;
+    private eat_zhuang_jia: boolean;
     private deck_validator: DeckValidator;
     private valid: boolean;
     private total_number_of_valid_decks: number;
@@ -50,6 +52,8 @@ export class BaseCounter {
         winning_tile: string,
         myself_mo: boolean,
         doorclear: boolean,
+        is_zhuang_jia: boolean,
+        eat_zhuang_jia: boolean,
         template_used_id: number
     ) {
         this.winner_tiles = winner_tiles;
@@ -58,6 +62,8 @@ export class BaseCounter {
         this.winning_tile = winning_tile;
         this.myself_mo = myself_mo;
         this.door_clear = doorclear;
+        this.is_zhuang_jia = is_zhuang_jia;
+        this. eat_zhuang_jia = eat_zhuang_jia;
         this.template_used_id = template_used_id;
         this.deck_validator = new DeckValidator(this.winner_tiles);
         this.valid = this.deck_validator.fullCheck();
