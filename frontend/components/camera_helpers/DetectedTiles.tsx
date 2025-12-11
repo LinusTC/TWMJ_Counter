@@ -1,29 +1,9 @@
-import { View, Text, StyleSheet, Pressable, Image } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
+import { Image } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
 import { DetectedTile } from "@/components/call_deck_classifier/call_deck_classifier";
 import { tileImageMap } from "@/constants/tile_images";
-
-export const sortTilesByPosition = (tiles: DetectedTile[]): DetectedTile[] => {
-    const sorted = [...tiles].sort((tileA, tileB) => {
-        const tileA_Y = tileA.bbox.y1;
-        const tileB_Y = tileB.bbox.y1;
-
-        // Check if tiles are on different rows (Y difference > 20 pixels)
-        const verticalDistance = Math.abs(tileA_Y - tileB_Y);
-        const areOnDifferentRows = verticalDistance > 20;
-
-        if (areOnDifferentRows) {
-            // Sort by vertical position: higher tiles first
-            return tileA_Y - tileB_Y;
-        } else {
-            const tileA_X = tileA.bbox.x1;
-            const tileB_X = tileB.bbox.x1;
-            return tileA_X - tileB_X;
-        }
-    });
-
-    return sorted;
-};
+import { sortTilesByPosition } from "@/utils/camera_helpers";
 
 interface DetectedTilesProps {
     detectedTiles: DetectedTile[];

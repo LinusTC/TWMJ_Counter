@@ -1,4 +1,5 @@
-import { View, Text, StyleSheet, Pressable, Image } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
+import { Image } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
 import { GameHistory } from "@/utils/database";
 import { WIND_LABELS, SEAT_DICT } from "@/constants/dictionary";

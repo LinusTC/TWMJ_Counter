@@ -21,11 +21,11 @@ import { TileCount, base_results } from "@/types/counter";
 import { ScoringTemplate } from "@/types/database";
 import { getAllScoringTemplates, saveGameHistory } from "@/utils/database";
 import CameraViewComponent from "@/components/camera_helpers/CameraView";
-import DetectedTiles, {
-    sortTilesByPosition,
-} from "@/components/camera_helpers/DetectedTiles";
+import DetectedTiles from "@/components/camera_helpers/DetectedTiles";
+import { sortTilesByPosition } from "@/utils/camera_helpers";
 import GameParameters from "@/components/camera_helpers/GameParameters";
 import Results from "@/components/camera_helpers/Results";
+import EditDetectedTilesModal from "@/components/camera_helpers/EditDetectedTilesModal";
 
 export default function Camera() {
     const [permission, requestPermission] = useCameraPermissions();
@@ -46,6 +46,7 @@ export default function Camera() {
     const [selectedTemplateId, setSelectedTemplateId] = useState<number | null>(
         null
     );
+    const [showEditModal, setShowEditModal] = useState<boolean>(false);
     const cameraRef = useRef<CameraView>(null);
 
     useEffect(() => {
@@ -149,7 +150,7 @@ export default function Camera() {
             if (base64ToSend) {
                 const tiles = await classifyImage(base64ToSend);
                 if (tiles) {
-                    setDetectedTiles(tiles);
+                    setDetectedTiles(sortTilesByPosition(tiles));
                 }
             }
         } catch (error) {
@@ -188,7 +189,7 @@ export default function Camera() {
                 if (base64ToSend) {
                     const tiles = await classifyImage(base64ToSend);
                     if (tiles) {
-                        setDetectedTiles(tiles);
+                        setDetectedTiles(sortTilesByPosition(tiles));
                     }
                 }
             }
@@ -245,6 +246,17 @@ export default function Camera() {
         setCountingResults(null);
     };
 
+    const handleSaveEditedTiles = (editedTileKeys: string[]) => {
+        const newDetectedTiles: DetectedTile[] = editedTileKeys.map(
+            (tile, index) => ({
+                tile,
+                confidence: 1.0,
+                bbox: { x1: 0, x2: 0, y1: 0, y2: 0 },
+            })
+        );
+        setDetectedTiles(newDetectedTiles);
+    };
+
     return (
         <GradientBackground>
             <View style={styles.container}>
@@ -283,9 +295,8 @@ export default function Camera() {
                 >
                     <DetectedTiles
                         detectedTiles={detectedTiles}
-                        onEdit={() => {}}
+                        onEdit={() => setShowEditModal(true)}
                     />
-
                     <GameParameters
                         winnerSeat={winnerSeat}
                         currentWind={currentWind}
@@ -307,7 +318,6 @@ export default function Camera() {
                         onLumZhuangChange={setlumZhuang}
                         onTemplateSelect={setSelectedTemplateId}
                     />
-
                     <Results countingResults={countingResults} />
                     {capturedImage &&
                         detectedTiles.length > 0 &&
@@ -320,6 +330,12 @@ export default function Camera() {
                             </Pressable>
                         )}
                 </ScrollView>
+                <EditDetectedTilesModal
+                    visible={showEditModal}
+                    onClose={() => setShowEditModal(false)}
+                    detectedTiles={detectedTiles.map((tile) => tile.tile)}
+                    onSave={handleSaveEditedTiles}
+                />
             </View>
         </GradientBackground>
     );
