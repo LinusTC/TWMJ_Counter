@@ -5,7 +5,6 @@ import {
     StyleSheet,
     ScrollView,
     Pressable,
-    Image,
     Alert,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
@@ -15,8 +14,9 @@ import {
     getAllGameHistory,
     GameHistory,
     deleteGameHistory,
+    updateGameHistoryName,
 } from "@/utils/database";
-import { WIND_LABELS, SEAT_DICT } from "@/constants/dictionary";
+import ExpandedHistoryCard from "@/components/history_helpers/ExpandedHistoryCard";
 
 export default function History() {
     const [gameHistory, setGameHistory] = useState<GameHistory[]>([]);
@@ -71,6 +71,29 @@ export default function History() {
         );
     }
 
+    function handleEdit(gameId: number, currentName: string, event: any) {
+        event.stopPropagation();
+
+        Alert.prompt(
+            "Edit Game Name",
+            "Enter a new name for this game:",
+            [
+                { text: "Cancel", style: "cancel" },
+                {
+                    text: "Save",
+                    onPress: (newName?: string) => {
+                        if (newName && newName.trim()) {
+                            updateGameHistoryName(gameId, newName.trim());
+                            loadHistory();
+                        }
+                    },
+                },
+            ],
+            "plain-text",
+            currentName
+        );
+    }
+
     return (
         <GradientBackground>
             <View style={styles.container}>
@@ -97,16 +120,35 @@ export default function History() {
                                         }
                                     >
                                         <View style={styles.cardLeft}>
-                                            <Text style={styles.gameName}>
-                                                {game.name || "Untitled Game"}
-                                            </Text>
+                                            <View style={styles.header}>
+                                                <Text style={styles.gameName}>
+                                                    {game.name ||
+                                                        "Untitled Game"}
+                                                </Text>
+                                                <Pressable
+                                                    style={styles.editButton}
+                                                    onPress={(e) =>
+                                                        handleEdit(
+                                                            game.id,
+                                                            game.name || "",
+                                                            e
+                                                        )
+                                                    }
+                                                >
+                                                    <Ionicons
+                                                        name="pencil"
+                                                        size={20}
+                                                        color="#166b60"
+                                                    />
+                                                </Pressable>
+                                            </View>
                                             <Text style={styles.gameDate}>
                                                 {formatDate(game.created_at)}
                                             </Text>
                                         </View>
                                         <View style={styles.cardRight}>
                                             <Text style={styles.pointsValue}>
-                                                {game.results.value}
+                                                {game.results.calculated_points}
                                             </Text>
                                             <Text style={styles.pointsLabel}>
                                                 pts
@@ -132,203 +174,14 @@ export default function History() {
                                     </Pressable>
 
                                     {isExpanded && (
-                                        <View style={styles.expandedContent}>
-                                            {game.image_uri && (
-                                                <Image
-                                                    source={{
-                                                        uri: game.image_uri,
-                                                    }}
-                                                    style={styles.gameImage}
-                                                    resizeMode="contain"
-                                                />
-                                            )}
-
-                                            <View style={styles.section}>
-                                                <Text
-                                                    style={styles.sectionTitle}
-                                                >
-                                                    Detected Tiles
-                                                </Text>
-                                                <View style={styles.tilesGrid}>
-                                                    {Object.entries(
-                                                        game.detected_tiles
-                                                    ).map(([tile, count]) => (
-                                                        <Text
-                                                            key={tile}
-                                                            style={
-                                                                styles.tileText
-                                                            }
-                                                        >
-                                                            {tile}: {count}
-                                                        </Text>
-                                                    ))}
-                                                </View>
-                                            </View>
-
-                                            <View style={styles.section}>
-                                                <Text
-                                                    style={styles.sectionTitle}
-                                                >
-                                                    Game Parameters
-                                                </Text>
-                                                <View style={styles.paramRow}>
-                                                    <Text
-                                                        style={
-                                                            styles.paramLabel
-                                                        }
-                                                    >
-                                                        Seat:
-                                                    </Text>
-                                                    <Text
-                                                        style={
-                                                            styles.paramValue
-                                                        }
-                                                    >
-                                                        {game.winner_seat} (
-                                                        {
-                                                            WIND_LABELS[
-                                                                SEAT_DICT[
-                                                                    game
-                                                                        .winner_seat
-                                                                ]
-                                                            ]
-                                                        }
-                                                        )
-                                                    </Text>
-                                                </View>
-                                                <View style={styles.paramRow}>
-                                                    <Text
-                                                        style={
-                                                            styles.paramLabel
-                                                        }
-                                                    >
-                                                        Wind:
-                                                    </Text>
-                                                    <Text
-                                                        style={
-                                                            styles.paramValue
-                                                        }
-                                                    >
-                                                        {
-                                                            WIND_LABELS[
-                                                                game
-                                                                    .current_wind
-                                                            ]
-                                                        }
-                                                    </Text>
-                                                </View>
-                                                <View style={styles.paramRow}>
-                                                    <Text
-                                                        style={
-                                                            styles.paramLabel
-                                                        }
-                                                    >
-                                                        Winning Tile:
-                                                    </Text>
-                                                    <Text
-                                                        style={
-                                                            styles.paramValue
-                                                        }
-                                                    >
-                                                        {game.winning_tile ||
-                                                            "N/A"}
-                                                    </Text>
-                                                </View>
-                                                <View style={styles.paramRow}>
-                                                    <Text
-                                                        style={
-                                                            styles.paramLabel
-                                                        }
-                                                    >
-                                                        Self-Draw:
-                                                    </Text>
-                                                    <Text
-                                                        style={
-                                                            styles.paramValue
-                                                        }
-                                                    >
-                                                        {game.myself_mo
-                                                            ? "Yes"
-                                                            : "No"}
-                                                    </Text>
-                                                </View>
-                                                <View style={styles.paramRow}>
-                                                    <Text
-                                                        style={
-                                                            styles.paramLabel
-                                                        }
-                                                    >
-                                                        Door Clear:
-                                                    </Text>
-                                                    <Text
-                                                        style={
-                                                            styles.paramValue
-                                                        }
-                                                    >
-                                                        {game.door_clear
-                                                            ? "Yes"
-                                                            : "No"}
-                                                    </Text>
-                                                </View>
-                                            </View>
-
-                                            <View style={styles.section}>
-                                                <Text
-                                                    style={styles.sectionTitle}
-                                                >
-                                                    Results
-                                                </Text>
-
-                                                <View style={styles.resultItem}>
-                                                    <Text
-                                                        style={
-                                                            styles.resultLabel
-                                                        }
-                                                    >
-                                                        Total Value:
-                                                    </Text>
-                                                    <Text
-                                                        style={
-                                                            styles.resultValue
-                                                        }
-                                                    >
-                                                        {game.results.value}
-                                                    </Text>
-                                                </View>
-                                                {game.results.log.map(
-                                                    (logEntry, index) => (
-                                                        <Text
-                                                            key={index}
-                                                            style={
-                                                                styles.logEntry
-                                                            }
-                                                        >
-                                                            • {logEntry}
-                                                        </Text>
-                                                    )
-                                                )}
-                                            </View>
-
-                                            <Pressable
-                                                style={styles.deleteButton}
-                                                onPress={(e) =>
-                                                    handleDelete(game, e)
-                                                }
-                                            >
-                                                <Ionicons
-                                                    name="trash-outline"
-                                                    size={18}
-                                                    color="#fff"
-                                                />
-                                                <Text
-                                                    style={
-                                                        styles.deleteButtonText
-                                                    }
-                                                >
-                                                    Delete Game
-                                                </Text>
-                                            </Pressable>
-                                        </View>
+                                        <ExpandedHistoryCard
+                                            game={game}
+                                            onDelete={(g) =>
+                                                handleDelete(g, {
+                                                    stopPropagation: () => {},
+                                                } as any)
+                                            }
+                                        />
                                     )}
                                 </View>
                             );
@@ -385,6 +238,13 @@ const styles = StyleSheet.create({
     cardLeft: {
         flex: 1,
     },
+    header: {
+        flexDirection: "row",
+        alignItems: "center",
+    },
+    editButton: {
+        padding: 4,
+    },
     gameName: {
         fontSize: 24,
         fontWeight: "600",
@@ -411,97 +271,5 @@ const styles = StyleSheet.create({
     },
     expandButton: {
         padding: 4,
-    },
-    expandedContent: {
-        paddingHorizontal: 16,
-        paddingBottom: 16,
-        gap: 16,
-    },
-    gameImage: {
-        width: "100%",
-        height: 200,
-        borderRadius: 8,
-        backgroundColor: "#f5f5f5",
-    },
-    section: {
-        gap: 8,
-    },
-    sectionTitle: {
-        fontSize: 20,
-        fontWeight: "600",
-        color: "#166b60",
-        marginBottom: 4,
-    },
-    tilesGrid: {
-        flexDirection: "row",
-        flexWrap: "wrap",
-        gap: 8,
-    },
-    tileText: {
-        fontSize: 16,
-        color: "#333",
-        backgroundColor: "#f0f0f0",
-        paddingHorizontal: 8,
-        paddingVertical: 4,
-        borderRadius: 4,
-    },
-    paramRow: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        paddingVertical: 4,
-    },
-    paramLabel: {
-        fontSize: 16,
-        color: "#666",
-        fontWeight: "500",
-    },
-    paramValue: {
-        fontSize: 16,
-        color: "#333",
-    },
-    resultItem: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        paddingVertical: 8,
-        paddingHorizontal: 12,
-        backgroundColor: "#f0f8f7",
-        borderRadius: 8,
-    },
-    resultLabel: {
-        fontSize: 16,
-        fontWeight: "600",
-        color: "#0a3d34",
-    },
-    resultValue: {
-        fontSize: 20,
-        fontWeight: "700",
-        color: "#166b60",
-    },
-    totalPoints: {
-        fontSize: 20,
-        fontWeight: "600",
-        color: "#166b60",
-        marginBottom: 8,
-    },
-    logEntry: {
-        fontSize: 14,
-        color: "#333",
-        lineHeight: 20,
-    },
-    deleteButton: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "#d32f2f",
-        paddingVertical: 12,
-        borderRadius: 8,
-        gap: 8,
-        marginTop: 8,
-    },
-    deleteButtonText: {
-        color: "#fff",
-        fontSize: 16,
-        fontWeight: "600",
     },
 });

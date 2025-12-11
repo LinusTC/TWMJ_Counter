@@ -99,7 +99,7 @@ if __name__ == "__main__":
         print("結果 / Results")
         print("="*60)
         print(f"\n牌組 / Tiles: {test_tiles}")
-        print(f"總分 / Total Score: {count}")
+        print(f"總分 / Total Points: {count}")
         print(f"計分明細 / Score Breakdown: {logs}")
         print(f"勝利牌組 / Winning Deck: {winning_deck_organized}")
         print("="*60)

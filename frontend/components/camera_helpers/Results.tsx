@@ -12,7 +12,7 @@ export default function Results({ countingResults }: ResultsProps) {
             {countingResults ? (
                 <View style={styles.resultsContent}>
                     <View style={styles.resultItem}>
-                        <Text style={styles.resultLabel}>Total Score:</Text>
+                        <Text style={styles.resultLabel}>Total Points:</Text>
                         <Text style={styles.resultValue}>
                             {countingResults.calculated_points}
                         </Text>

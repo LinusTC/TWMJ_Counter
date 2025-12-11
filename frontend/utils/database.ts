@@ -11,7 +11,7 @@ const db = SQLite.openDatabaseSync("twmj.db");
 const EXPECTED_SCHEMA = {
     game_history: [
         { name: "name", type: "TEXT" },
-        { name: "new_column", type: "INTEGER DEFAULT 0" },
+        { name: "tiles_array", type: "TEXT" },
     ],
 };
 
@@ -218,16 +218,14 @@ export interface GameHistory {
     name: string | null;
     image_uri: string | null;
     detected_tiles: Record<string, number>;
+    tiles_array: string[];
     winner_seat: number;
     current_wind: string;
     winning_tile: string | null;
     myself_mo: boolean;
     door_clear: boolean;
     template_id: number;
-    results: {
-        value: number;
-        log: string[];
-    };
+    results: base_results;
     created_at: string;
 }
 
@@ -235,6 +233,7 @@ export function saveGameHistory(
     name: string | null,
     imageUri: string | null,
     detectedTiles: Record<string, number>,
+    tilesArray: string[],
     winnerSeat: number,
     currentWind: string,
     winningTile: string,
@@ -245,13 +244,14 @@ export function saveGameHistory(
 ) {
     const stmt = db.prepareSync(
         `INSERT INTO game_history 
-        (name, image_uri, detected_tiles, winner_seat, current_wind, winning_tile, myself_mo, door_clear, template_id, results) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        (name, image_uri, detected_tiles, tiles_array, winner_seat, current_wind, winning_tile, myself_mo, door_clear, template_id, results) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     );
     stmt.executeSync([
         name,
         imageUri,
         JSON.stringify(detectedTiles),
+        JSON.stringify(tilesArray),
         winnerSeat,
         currentWind,
         winningTile,
@@ -271,6 +271,7 @@ export function getAllGameHistory(): GameHistory[] {
         name: row.name,
         image_uri: row.image_uri,
         detected_tiles: JSON.parse(row.detected_tiles),
+        tiles_array: row.tiles_array ? JSON.parse(row.tiles_array) : [],
         winner_seat: row.winner_seat,
         current_wind: row.current_wind,
         winning_tile: row.winning_tile,
@@ -293,6 +294,7 @@ export function getGameHistoryById(id: number): GameHistory | null {
             name: row.name,
             image_uri: row.image_uri,
             detected_tiles: JSON.parse(row.detected_tiles),
+            tiles_array: row.tiles_array ? JSON.parse(row.tiles_array) : [],
             winner_seat: row.winner_seat,
             current_wind: row.current_wind,
             winning_tile: row.winning_tile,
@@ -304,6 +306,10 @@ export function getGameHistoryById(id: number): GameHistory | null {
         };
     }
     return null;
+}
+
+export function updateGameHistoryName(id: number, newName: string) {
+    db.runSync("UPDATE game_history SET name = ? WHERE id = ?", [newName, id]);
 }
 
 export function deleteGameHistory(id: number) {

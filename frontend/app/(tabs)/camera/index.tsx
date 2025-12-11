@@ -21,7 +21,9 @@ import { TileCount, base_results } from "@/types/counter";
 import { ScoringTemplate } from "@/types/database";
 import { getAllScoringTemplates, saveGameHistory } from "@/utils/database";
 import CameraViewComponent from "@/components/camera_helpers/CameraView";
-import DetectedTiles from "@/components/camera_helpers/DetectedTiles";
+import DetectedTiles, {
+    sortTilesByPosition,
+} from "@/components/camera_helpers/DetectedTiles";
 import GameParameters from "@/components/camera_helpers/GameParameters";
 import Results from "@/components/camera_helpers/Results";
 
@@ -216,11 +218,14 @@ export default function Camera() {
         Alert.prompt("Save Game", "Enter a name for this game:", (gameName) => {
             if (gameName && gameName.trim()) {
                 const tileCount = convertToTileCount(detectedTiles);
+                const sortedTiles = sortTilesByPosition(detectedTiles);
+                const tilesArray = sortedTiles.map((tile) => tile.tile);
 
                 saveGameHistory(
                     gameName.trim(),
                     capturedImage,
                     tileCount,
+                    tilesArray,
                     winnerSeat,
                     currentWind,
                     winningTile,
