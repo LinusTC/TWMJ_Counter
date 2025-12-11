@@ -1,17 +1,9 @@
-import {
-    View,
-    Text,
-    StyleSheet,
-    Pressable,
-    Image,
-} from "react-native";
+import { View, Text, StyleSheet, Pressable, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { DetectedTile } from "@/components/call_deck_classifier/call_deck_classifier";
 import { tileImageMap } from "@/constants/tile_images";
 
-export const sortTilesByPosition = (
-    tiles: DetectedTile[]
-): DetectedTile[] => {
+export const sortTilesByPosition = (tiles: DetectedTile[]): DetectedTile[] => {
     const sorted = [...tiles].sort((tileA, tileB) => {
         const tileA_Y = tileA.bbox.y1;
         const tileB_Y = tileB.bbox.y1;
@@ -138,8 +130,8 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     tileImage: {
-        width: "155%",
-        height: "155%",
+        width: "100%",
+        height: "100%",
         resizeMode: "cover",
         backgroundColor: "transparent",
     },

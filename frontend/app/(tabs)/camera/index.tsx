@@ -234,7 +234,7 @@ export default function Camera() {
                     selectedTemplateId,
                     countingResults
                 );
-                Alert.alert("Success", "Game saved to history!");
+                Alert.alert("Success", "Game saved!");
             }
         });
     }

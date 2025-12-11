@@ -189,8 +189,8 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     tileImage: {
-        width: "155%",
-        height: "155%",
+        width: "100%",
+        height: "100%",
         resizeMode: "cover",
         backgroundColor: "transparent",
     },

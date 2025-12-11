@@ -22,7 +22,7 @@ const zh = {
     tabs_templates: "模版",
     tabs_camera: "相機",
     tabs_profile: "個人資料",
-    tabs_history: "戰績",
+    tabs_saves: "儲存",
 };
 
 export default zh;

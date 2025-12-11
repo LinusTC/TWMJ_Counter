@@ -16,7 +16,7 @@ import {
     deleteGameHistory,
     updateGameHistoryName,
 } from "@/utils/database";
-import ExpandedHistoryCard from "@/components/history_helpers/ExpandedHistoryCard";
+import ExpandedHistoryCard from "@/components/saves_helpers/ExpandedSaveCard";
 
 export default function History() {
     const [gameHistory, setGameHistory] = useState<GameHistory[]>([]);
@@ -97,7 +97,7 @@ export default function History() {
     return (
         <GradientBackground>
             <View style={styles.container}>
-                <Text style={styles.pageTitle}>History</Text>
+                <Text style={styles.pageTitle}>Saves</Text>
                 <ScrollView
                     style={styles.list}
                     contentContainerStyle={styles.listContent}
@@ -105,7 +105,7 @@ export default function History() {
                 >
                     {gameHistory.length === 0 ? (
                         <Text style={styles.emptyText}>
-                            No game history yet. Play some games to see them
+                            No saves yet. Saves some games to see them
                             here.
                         </Text>
                     ) : (

@@ -67,12 +67,12 @@ export default function TabsLayout() {
                 }}
             />
             <Tabs.Screen
-                name="history/index"
+                name="saves/index"
                 options={{
-                    title: "History",
+                    title: "Saves",
                     tabBarIcon: ({ color }) => (
                         <Ionicons
-                            name="document-text-outline"
+                            name="bookmark"
                             size={tab_icon_size}
                             color={color}
                         />

@@ -23,7 +23,7 @@ const en = {
     tabs_profile: "Profile",
     tabs_camera: "Camera",
     tabs_templates: "Templates",
-    tabs_history: "History",
+    tabs_saves: "Saves",
 };
 
 export default en;
