@@ -1,6 +1,45 @@
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import {
+    View,
+    Text,
+    StyleSheet,
+    Pressable,
+    Image,
+    ImageSourcePropType,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { DetectedTile } from "@/components/call_deck_classifier/call_deck_classifier";
+import { ALL_TILES } from "@/constants/dictionary";
+
+type TileImageMap = Record<string, ImageSourcePropType | null>;
+
+// Placeholder map until tile images are wired up
+const tileImageMap: TileImageMap = ALL_TILES.reduce((acc, tileKey) => {
+    acc[tileKey] = null;
+    return acc;
+}, {} as TileImageMap);
+
+const sortTilesByPosition = (tiles: DetectedTile[]): DetectedTile[] => {
+    const sorted = [...tiles].sort((tileA, tileB) => {
+        // Get the vertical position (Y) of both tiles
+        const tileA_Y = tileA.bbox.y1;
+        const tileB_Y = tileB.bbox.y1;
+        
+        // Check if tiles are on different rows (Y difference > 20 pixels)
+        const verticalDistance = Math.abs(tileA_Y - tileB_Y);
+        const areOnDifferentRows = verticalDistance > 20;
+        
+        if (areOnDifferentRows) {
+            // Sort by vertical position: higher tiles first
+            return tileA_Y - tileB_Y;
+        } else {
+            const tileA_X = tileA.bbox.x1;
+            const tileB_X = tileB.bbox.x1;
+            return tileA_X - tileB_X;
+        }
+    });
+    
+    return sorted;
+};
 
 interface DetectedTilesProps {
     detectedTiles: DetectedTile[];
@@ -11,6 +50,8 @@ export default function DetectedTiles({
     detectedTiles,
     onEdit,
 }: DetectedTilesProps) {
+    const sortedTiles = sortTilesByPosition(detectedTiles);
+
     return (
         <View style={styles.detectionsSection}>
             <View style={styles.header}>
@@ -22,14 +63,32 @@ export default function DetectedTiles({
             </View>
             {detectedTiles.length > 0 ? (
                 <View style={styles.tileList}>
-                    {detectedTiles.map((tile, index) => (
-                        <View
-                            key={`${tile.tile}-${index}`}
-                            style={styles.tileItem}
-                        >
-                            <Text style={styles.tileText}>{tile.tile}</Text>
-                        </View>
-                    ))}
+                    {sortedTiles.map((tile, index) => {
+                        const tileKey = tile.tile;
+                        const tileSource = tileImageMap[tileKey] ?? null;
+
+                        return (
+                            <View
+                                key={`${tileKey}-${index}`}
+                                style={styles.tileSlot}
+                            >
+                                {tileSource ? (
+                                    <Image
+                                        source={tileSource}
+                                        style={styles.tileImage}
+                                    />
+                                ) : (
+                                    <View style={styles.placeholderTile}>
+                                        <Text
+                                            style={styles.placeholderTileText}
+                                        >
+                                            {tileKey}
+                                        </Text>
+                                    </View>
+                                )}
+                            </View>
+                        );
+                    })}
                 </View>
             ) : (
                 <Text style={styles.placeholderText}>
@@ -75,14 +134,36 @@ const styles = StyleSheet.create({
         color: "#0a3d34",
     },
     tileList: {
-        gap: 6,
+        flexDirection: "row",
+        flexWrap: "wrap",
+        gap: 8,
     },
-    tileItem: {
-        gap: 2,
+    tileSlot: {
+        width: 40,
+        height: 56,
+        alignItems: "center",
+        justifyContent: "center",
     },
-    tileText: {
-        fontSize: 15,
+    tileImage: {
+        width: "100%",
+        height: "100%",
+        resizeMode: "contain",
+    },
+    placeholderTile: {
+        width: "100%",
+        height: "100%",
+        borderWidth: 1,
+        borderColor: "rgba(10,61,52,0.2)",
+        borderRadius: 8,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "#f6fbfa",
+        paddingHorizontal: 4,
+    },
+    placeholderTileText: {
+        fontSize: 10,
         color: "#0a3d34",
+        textAlign: "center",
     },
     placeholderText: {
         fontSize: 14,

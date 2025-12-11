@@ -97,6 +97,7 @@ export class BaseCounter {
         let max_logs: string[] = [];
         let winning_deck: TileCount | null = null;
         let winning_deck_organized: ValidatedDeck | null = null;
+        let max_calculated_points: number = 0;
 
         const add_to_log = (
             curr_logs: string | string[] | null,
@@ -416,12 +417,14 @@ export class BaseCounter {
             temp_value += dragons_results.value;
             add_to_log(dragons_results.log, temp_logs);
 
+            const calculated_points = temp_value;
             temp_value *= multiplier;
             temp_value += base_value;
 
             if (temp_value > max_value) {
                 max_value = temp_value;
                 max_logs = temp_logs;
+                max_calculated_points = calculated_points;
                 winning_deck = this.winner_tiles;
                 winning_deck_organized = this.curr_validated_tiles;
             }
@@ -435,6 +438,9 @@ export class BaseCounter {
             log: this.logs,
             winning_deck: winning_deck,
             winning_deck_organized: winning_deck_organized,
+            calculated_points: max_calculated_points,
+            multiplier: multiplier,
+            base_value: base_value,
         };
     }
 }

@@ -37,6 +37,9 @@ export interface base_results {
     log: string | string[] | null;
     winning_deck: TileCount | null;
     winning_deck_organized: ValidatedDeck | null;
+    calculated_points?: number;
+    multiplier?: number;
+    base_value?: number;
 }
 
 export interface CounterState {

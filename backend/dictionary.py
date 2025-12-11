@@ -10,7 +10,7 @@ JOKER_DICT = 'joker'
 
 MST_DICT = M_DICT | T_DICT | S_DICT
 
-ALL_TILES = (list(M_DICT.keys()) + list(T_DICT.keys()) + list(S_DICT.keys()) + list(WIND_DICT) + list(ZFB_DICT))
+ALL_TILES_NO_FLOWER = (list(M_DICT.keys()) + list(T_DICT.keys()) + list(S_DICT.keys()) + list(WIND_DICT) + list(ZFB_DICT))
 EYES_DICT = 'eyes'
 SHANG_DICT = 'shang'
 PONG_DICT = 'pong'

@@ -77,14 +77,14 @@ class DeckValidatorJoker:
                 collected.append([pair.copy() for pair in current_pairs])
                 return
 
-            if start_idx >= len(ALL_TILES):
+            if start_idx >= len(ALL_TILES_NO_FLOWER):
                 return
 
             if not pairs_needed_remaining(counts, jokers_left, pairs_needed):
                 return
 
-            for idx in range(start_idx, len(ALL_TILES)):
-                tile = ALL_TILES[idx]
+            for idx in range(start_idx, len(ALL_TILES_NO_FLOWER)):
+                tile = ALL_TILES_NO_FLOWER[idx]
                 available = counts.get(tile, 0)
 
                 if available >= 2:
@@ -110,7 +110,7 @@ class DeckValidatorJoker:
                     pair_dfs(idx, counts, jokers_left - 2, pairs_needed - 1, current_pairs, collected)
                     current_pairs.pop()
 
-        for triplet_tile in ALL_TILES:
+        for triplet_tile in ALL_TILES_NO_FLOWER:
             available = base_counts.get(triplet_tile, 0)
             max_joker_use = min(3, joker_number)
 
@@ -397,7 +397,7 @@ class DeckValidatorJoker:
                 })
 
         if joker_number >= 2:
-            for tile in ALL_TILES:
+            for tile in ALL_TILES_NO_FLOWER:
                 candidates.append({
                     'eye_tile': tile,
                     'eye_tiles': [tile, tile],
@@ -495,7 +495,7 @@ class DeckValidatorJoker:
 
     def _get_joker_only_triplets(self):
         if not hasattr(self, '_joker_triplets_cache'):
-            combos = [[tile, tile, tile] for tile in ALL_TILES]
+            combos = [[tile, tile, tile] for tile in ALL_TILES_NO_FLOWER]
             for suit in TSM_NAME:
                 for rank in range(1, 8):
                     combos.append([f'{suit}{rank}', f'{suit}{rank + 1}', f'{suit}{rank + 2}'])
@@ -504,7 +504,7 @@ class DeckValidatorJoker:
 
     def _get_joker_only_quads(self):
         if not hasattr(self, '_joker_quads_cache'):
-            self._joker_quads_cache = [[tile, tile, tile, tile] for tile in ALL_TILES]
+            self._joker_quads_cache = [[tile, tile, tile, tile] for tile in ALL_TILES_NO_FLOWER]
         return self._joker_quads_cache
 
     def _get_thirteen_required_tiles(self):

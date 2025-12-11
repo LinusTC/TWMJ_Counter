@@ -126,11 +126,11 @@ class DeckValidator:
         eyes = [key for key, value in tiles.items() if value == 2]
         if len(eyes) != 1: return None
 
-        all_tiles = []
+        ALL_TILES_NO_FLOWER = []
         for key, value in tiles.items():
-            all_tiles.extend([key] * value)
+            ALL_TILES_NO_FLOWER.extend([key] * value)
 
-        return {'hu_type': sixteen_bd_hu,'eyes': eyes[0],'tiles': all_tiles}
+        return {'hu_type': sixteen_bd_hu,'eyes': eyes[0],'tiles': ALL_TILES_NO_FLOWER}
     
     def thirteen_waist_check(self, tiles):
         tiles_to_remove = []

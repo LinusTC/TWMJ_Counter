@@ -14,9 +14,17 @@ export default function Results({ countingResults }: ResultsProps) {
                     <View style={styles.resultItem}>
                         <Text style={styles.resultLabel}>Total Value:</Text>
                         <Text style={styles.resultValue}>
+                            <Text style={styles.formulaBreakdown}>
+                                ({countingResults.calculated_points} ×{" "}
+                                {countingResults.multiplier}) +{" "}
+                                {countingResults.base_value} ={" "}
+                            </Text>
                             {countingResults.value}
                         </Text>
                     </View>
+                    <Text style={styles.formulaText}>
+                        (Base Points × Multiplier) + Base Value
+                    </Text>
                     {countingResults.log && countingResults.log.length > 0 && (
                         <View style={styles.logsContainer}>
                             <Text style={styles.logsTitle}>
@@ -83,6 +91,18 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: "700",
         color: "#166b60",
+    },
+    formulaBreakdown: {
+        fontSize: 14,
+        fontWeight: "400",
+        color: "#6b8580",
+    },
+    formulaText: {
+        fontSize: 13,
+        color: "#6b8580",
+        fontStyle: "italic",
+        textAlign: "center",
+        marginTop: -8,
     },
     logsContainer: {
         gap: 8,

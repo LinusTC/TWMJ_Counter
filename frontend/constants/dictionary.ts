@@ -48,13 +48,18 @@ export const JOKER_DICT = "joker";
 export const MST_DICT = { ...M_DICT, ...T_DICT, ...S_DICT };
 
 // All tiles list
-export const ALL_TILES = [
+export const ALL_TILES_NO_FLOWER = [
     ...Object.keys(M_DICT),
     ...Object.keys(T_DICT),
     ...Object.keys(S_DICT),
     ...Array.from(WIND_DICT),
     ...Array.from(ZFB_DICT),
 ];
+
+export const ALL_TILES = [
+    ...Array.from(ALL_TILES_NO_FLOWER),
+    ...Object.keys(FLOWER_DICT)
+]
 
 // Set types
 export const EYES_DICT = "eyes";
