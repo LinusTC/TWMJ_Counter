@@ -28,7 +28,7 @@ const sixteenbd_test: TileCount = {
     north: 1,
     zhong: 1,
     fa: 1,
-    bai: 1,
+    bak: 1,
 };
 const Thirteen_waist_test: TileCount = {
     m1: 1,
@@ -45,9 +45,9 @@ const Thirteen_waist_test: TileCount = {
     north: 1,
     zhong: 1,
     fa: 1,
-    bai: 1,
+    bak: 1,
 };
-const ligu_test: TileCount = { m1: 4, m5: 4, t1: 4, zhong: 2, bai: 3 };
+const ligu_test: TileCount = { m1: 4, m5: 4, t1: 4, zhong: 2, bak: 3 };
 const standard_test: TileCount = {
     m2: 1,
     m3: 1,

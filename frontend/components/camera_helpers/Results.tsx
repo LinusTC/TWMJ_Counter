@@ -12,19 +12,11 @@ export default function Results({ countingResults }: ResultsProps) {
             {countingResults ? (
                 <View style={styles.resultsContent}>
                     <View style={styles.resultItem}>
-                        <Text style={styles.resultLabel}>Total Value:</Text>
+                        <Text style={styles.resultLabel}>Total Score:</Text>
                         <Text style={styles.resultValue}>
-                            <Text style={styles.formulaBreakdown}>
-                                ({countingResults.calculated_points} ×{" "}
-                                {countingResults.multiplier}) +{" "}
-                                {countingResults.base_value} ={" "}
-                            </Text>
-                            {countingResults.value}
+                            {countingResults.calculated_points}
                         </Text>
                     </View>
-                    <Text style={styles.formulaText}>
-                        (Base Points × Multiplier) + Base Value
-                    </Text>
                     {countingResults.log && countingResults.log.length > 0 && (
                         <View style={styles.logsContainer}>
                             <Text style={styles.logsTitle}>
@@ -43,6 +35,19 @@ export default function Results({ countingResults }: ResultsProps) {
                             )}
                         </View>
                     )}
+                    <View style={styles.totalValueContainer}>
+                        <Text style={styles.totalValueLabel}>Total Value:</Text>
+                        <View style={styles.totalValueWrapper}>
+                            <Text style={styles.formulaBreakdown}>
+                                ({countingResults.calculated_points} ×{" "}
+                                {countingResults.multiplier}) +{" "}
+                                {countingResults.base_value} ={" "}
+                            </Text>
+                            <Text style={styles.totalValue}>
+                                {countingResults.value}
+                            </Text>
+                        </View>
+                    </View>
                 </View>
             ) : (
                 <Text style={styles.placeholderText}>
@@ -83,19 +88,47 @@ const styles = StyleSheet.create({
         borderRadius: 8,
     },
     resultLabel: {
-        fontSize: 16,
+        fontSize: 20,
         fontWeight: "600",
         color: "#0a3d34",
     },
     resultValue: {
-        fontSize: 20,
+        fontSize: 24,
         fontWeight: "700",
         color: "#166b60",
     },
+    totalValueContainer: {
+        paddingVertical: 16,
+        paddingHorizontal: 16,
+        backgroundColor: "#0d5a4f",
+        borderRadius: 12,
+    },
+    totalValueLabel: {
+        fontSize: 18,
+        fontWeight: "700",
+        color: "#ffffff",
+        marginBottom: 8,
+        letterSpacing: 1,
+    },
+    totalValueWrapper: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        flexWrap: "wrap",
+        gap: 8,
+    },
+    totalValue: {
+        fontSize: 26,
+        fontWeight: "900",
+        color: "#ffffff",
+        textShadowColor: "rgba(0, 0, 0, 0.5)",
+        textShadowOffset: { width: 1, height: 1 },
+        textShadowRadius: 3,
+    },
     formulaBreakdown: {
-        fontSize: 14,
+        fontSize: 16,
         fontWeight: "400",
-        color: "#6b8580",
+        color: "#a8d5cc",
     },
     formulaText: {
         fontSize: 13,

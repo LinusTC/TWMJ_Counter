@@ -511,7 +511,7 @@ class DeckValidatorJoker:
         if not hasattr(self, '_thirteen_required_cache'):
             self._thirteen_required_cache = [
                 'east', 'south', 'west', 'north',
-                'zhong', 'fa', 'bai',
+                'zhong', 'fa', 'bak',
                 'm1', 'm9', 't1', 't9', 's1', 's9'
             ]
         return self._thirteen_required_cache

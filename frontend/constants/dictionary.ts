@@ -22,7 +22,7 @@ export const WIND_LABELS: Record<string, string> = {
     north: "北",
 };
 
-export const ZFB_DICT = new Set(["zhong", "fa", "bai"]);
+export const ZFB_DICT = new Set(["zhong", "fa", "bak"]);
 
 export const FLOWER_DICT: Record<string, number> = {
     f1: 1,
@@ -58,8 +58,8 @@ export const ALL_TILES_NO_FLOWER = [
 
 export const ALL_TILES = [
     ...Array.from(ALL_TILES_NO_FLOWER),
-    ...Object.keys(FLOWER_DICT)
-]
+    ...Object.keys(FLOWER_DICT),
+];
 
 // Set types
 export const EYES_DICT = "eyes";
