@@ -7,7 +7,9 @@ import {
     TextInput,
     Switch,
 } from "react-native";
+import { Image } from "expo-image";
 import { WIND_DICT, SEAT_DICT, WIND_LABELS } from "@/constants/dictionary";
+import { DISPLAY_TILE_SIZE, tileImageMap } from "@/constants/tile_images";
 import { ScoringTemplate } from "@/types/database";
 
 interface GameParametersProps {
@@ -30,6 +32,7 @@ interface GameParametersProps {
     onEatZhuangChange: (value: boolean) => void;
     onLumZhuangChange: (value: number) => void;
     onTemplateSelect: (templateId: number) => void;
+    onOpenWinningTileModal?: () => void;
 }
 
 export default function GameParameters({
@@ -52,6 +55,7 @@ export default function GameParameters({
     onEatZhuangChange,
     onLumZhuangChange,
     onTemplateSelect,
+    onOpenWinningTileModal,
 }: GameParametersProps) {
     const [showTemplates, setShowTemplates] = useState(false);
     const selectedTemplate = templates.find(
@@ -185,13 +189,25 @@ export default function GameParameters({
 
             <View style={styles.paramRow}>
                 <Text style={styles.paramLabel}>Winning Tile:</Text>
-                <TextInput
-                    style={styles.tileInput}
-                    value={winningTile}
-                    onChangeText={onWinningTileChange}
-                    placeholder="Enter tile"
-                    placeholderTextColor="#999"
-                />
+                {onOpenWinningTileModal && (
+                    <Pressable
+                        style={styles.winningTileImageButton}
+                        onPress={onOpenWinningTileModal}
+                    >
+                        {winningTile && tileImageMap[winningTile] ? (
+                            <Image
+                                source={tileImageMap[winningTile]}
+                                style={styles.winningTileImage}
+                            />
+                        ) : (
+                            <View style={styles.blankTilePlaceholder}>
+                                <Text style={styles.blankTilePlaceholderText}>
+                                    Tap to select
+                                </Text>
+                            </View>
+                        )}
+                    </Pressable>
+                )}
             </View>
 
             <View style={styles.paramRow}>
@@ -315,17 +331,34 @@ const styles = StyleSheet.create({
     pickerButtonTextActive: {
         color: "#fff",
     },
-    tileInput: {
-        flex: 1,
-        maxWidth: 150,
-        paddingVertical: 10,
-        paddingHorizontal: 12,
+    winningTileImageButton: {
+        width: 40,
+        height: 60,
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 2,
+        borderRadius: 8,
         borderWidth: 2,
         borderColor: "#166b60",
-        borderRadius: 8,
-        fontSize: 15,
+        backgroundColor: "#fff",
+    },
+    winningTileImage: {
+        width: DISPLAY_TILE_SIZE,
+        height: DISPLAY_TILE_SIZE,
+        resizeMode: "contain",
+    },
+    blankTilePlaceholder: {
+        width: DISPLAY_TILE_SIZE,
+        height: DISPLAY_TILE_SIZE,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#f6fbfa",
+    },
+    blankTilePlaceholderText: {
+        fontSize: 11,
+        color: "#5a716b",
+        textAlign: "center",
         fontWeight: "500",
-        color: "#0a3d34",
     },
     numberWheelContainer: {
         flexDirection: "row",

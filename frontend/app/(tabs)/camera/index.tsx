@@ -27,6 +27,7 @@ import { sortTilesByPosition } from "@/utils/camera_helpers";
 import GameParameters from "@/components/camera_helpers/GameParameters";
 import Results from "@/components/camera_helpers/Results";
 import EditDetectedTilesModal from "@/components/camera_helpers/EditDetectedTilesModal";
+import SelectWinningTileModal from "@/components/camera_helpers/SelectWinningTileModal";
 import { c_special_hu } from "@/components/deck_counter/counter_helpers/c_special_hu";
 
 export default function Camera() {
@@ -49,6 +50,8 @@ export default function Camera() {
         null
     );
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
+    const [showWinningTileModal, setShowWinningTileModal] =
+        useState<boolean>(false);
     const cameraRef = useRef<CameraView>(null);
 
     useEffect(() => {
@@ -259,6 +262,7 @@ export default function Camera() {
         setCapturedImage(null);
         setDetectedTiles([]);
         setCountingResults(null);
+        setWinningTile("");
     };
 
     const handleSaveEditedTiles = (editedTileKeys: string[]) => {
@@ -332,6 +336,9 @@ export default function Camera() {
                         onEatZhuangChange={setEatZhuang}
                         onLumZhuangChange={setlumZhuang}
                         onTemplateSelect={setSelectedTemplateId}
+                        onOpenWinningTileModal={() =>
+                            setShowWinningTileModal(true)
+                        }
                     />
                     <Results countingResults={countingResults} />
                     {capturedImage &&
@@ -350,6 +357,13 @@ export default function Camera() {
                     onClose={() => setShowEditModal(false)}
                     detectedTiles={detectedTiles.map((tile) => tile.tile)}
                     onSave={handleSaveEditedTiles}
+                />
+                <SelectWinningTileModal
+                    visible={showWinningTileModal}
+                    onClose={() => setShowWinningTileModal(false)}
+                    detectedTiles={detectedTiles.map((tile) => tile.tile)}
+                    selectedWinningTile={winningTile}
+                    onSelect={setWinningTile}
                 />
             </View>
         </GradientBackground>

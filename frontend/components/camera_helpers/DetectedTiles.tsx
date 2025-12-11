@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, Pressable } from "react-native";
 import { Image } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
 import { DetectedTile } from "@/components/call_deck_classifier/call_deck_classifier";
-import { tileImageMap } from "@/constants/tile_images";
+import { DISPLAY_TILE_SIZE, tileImageMap } from "@/constants/tile_images";
 import { sortTilesByPosition } from "@/utils/camera_helpers";
 
 interface DetectedTilesProps {
@@ -110,14 +110,14 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     tileImage: {
-        width: "100%",
-        height: "100%",
+        width: DISPLAY_TILE_SIZE,
+        height: DISPLAY_TILE_SIZE,
         resizeMode: "cover",
         backgroundColor: "transparent",
     },
     placeholderTile: {
-        width: "100%",
-        height: "100%",
+        width: DISPLAY_TILE_SIZE,
+        height: DISPLAY_TILE_SIZE,
         borderWidth: 1,
         borderColor: "rgba(10,61,52,0.2)",
         borderRadius: 8,

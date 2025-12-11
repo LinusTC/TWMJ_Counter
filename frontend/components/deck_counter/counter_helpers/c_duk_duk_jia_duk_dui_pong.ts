@@ -12,11 +12,6 @@ export function c_duk_duk_jia_duk_dui_pong(
         return { value: 0, log: null };
     }
 
-    const is_special_hu = checkIsSpecialHu(curr_validated_tiles);
-    if (is_special_hu) {
-        return { value: 0, log: null };
-    }
-
     const groups_with_winning_tile: Map<string, string[]> = new Map();
 
     if (curr_validated_tiles.tiles) {
@@ -39,6 +34,21 @@ export function c_duk_duk_jia_duk_dui_pong(
     ).map((incomplete_group) => findTilesThatCompleteSet(incomplete_group));
 
     if (groups_with_winning_tile.size === 1) {
+        const group_array = Array.from(groups_with_winning_tile.keys())[0];
+        const original_tiles = JSON.parse(group_array);
+
+        // If the tile group only has 1 tile, it's duk duk
+        if (
+            original_tiles.length === 1 &&
+            template_enabled_values.real_solo_value
+        ) {
+            const real_solo_value = template_values.real_solo_value || 0;
+            return {
+                value: real_solo_value,
+                log: `獨獨 +${real_solo_value}`,
+            };
+        }
+
         const possible_tiles = possible_tiles_list[0];
         if (
             possible_tiles &&

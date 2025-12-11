@@ -3,7 +3,7 @@ import { Image } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
 import { GameHistory } from "@/utils/database";
 import { WIND_LABELS, SEAT_DICT } from "@/constants/dictionary";
-import { tileImageMap } from "@/constants/tile_images";
+import { DISPLAY_TILE_SIZE, tileImageMap } from "@/constants/tile_images";
 
 interface ExpandedHistoryCardProps {
     game: GameHistory;
@@ -87,9 +87,18 @@ export default function ExpandedHistoryCard({
                 </View>
                 <View style={styles.paramRow}>
                     <Text style={styles.paramLabel}>Winning Tile:</Text>
-                    <Text style={styles.paramValue}>
-                        {game.winning_tile || "N/A"}
-                    </Text>
+                    {game.winning_tile && tileImageMap[game.winning_tile] ? (
+                        <View style={styles.winningTileContainer}>
+                            <Image
+                                source={tileImageMap[game.winning_tile]}
+                                style={styles.winningTileImage}
+                            />
+                        </View>
+                    ) : (
+                        <Text style={styles.paramValue}>
+                            {game.winning_tile || "N/A"}
+                        </Text>
+                    )}
                 </View>
                 <View style={styles.paramRow}>
                     <Text style={styles.paramLabel}>Self-Draw:</Text>
@@ -190,14 +199,14 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     tileImage: {
-        width: "100%",
-        height: "100%",
+        width: DISPLAY_TILE_SIZE,
+        height: DISPLAY_TILE_SIZE,
         resizeMode: "cover",
         backgroundColor: "transparent",
     },
     placeholderTile: {
-        width: "100%",
-        height: "100%",
+        width: DISPLAY_TILE_SIZE,
+        height: DISPLAY_TILE_SIZE,
         borderWidth: 1,
         borderColor: "rgba(10,61,52,0.2)",
         borderRadius: 8,
@@ -237,6 +246,17 @@ const styles = StyleSheet.create({
     paramValue: {
         fontSize: 16,
         color: "#333",
+    },
+    winningTileContainer: {
+        width: 40,
+        height: 60,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    winningTileImage: {
+        width: DISPLAY_TILE_SIZE,
+        height: DISPLAY_TILE_SIZE,
+        resizeMode: "contain",
     },
     resultItem: {
         flexDirection: "row",

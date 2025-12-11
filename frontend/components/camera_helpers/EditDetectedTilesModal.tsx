@@ -8,7 +8,7 @@ import {
     StyleSheet,
 } from "react-native";
 import { Image } from "expo-image";
-import { tileImageMap } from "@/constants/tile_images";
+import { DISPLAY_TILE_SIZE, tileImageMap } from "@/constants/tile_images";
 import {
     M_DICT,
     T_DICT,
@@ -281,8 +281,8 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     tileImage: {
-        width: "100%",
-        height: "100%",
+        width: DISPLAY_TILE_SIZE,
+        height: DISPLAY_TILE_SIZE,
         resizeMode: "contain",
     },
     removeButton: {
@@ -340,8 +340,8 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     dictionaryTileImage: {
-        width: "100%",
-        height: "100%",
+        width: DISPLAY_TILE_SIZE,
+        height: DISPLAY_TILE_SIZE,
         resizeMode: "contain",
     },
     actionsRow: {
