@@ -27,6 +27,7 @@ import { c_dui_dui_or_ping_or_kang_kang_hu } from "./counter_helpers/c_dui_dui_o
 import { c_dragons } from "./counter_helpers/c_dragons";
 import { getTemplateById } from "@/utils/database";
 import { c_zhuang } from "./counter_helpers/c_zhuang";
+import { c_special_hu } from "./counter_helpers/c_special_hu";
 
 export class BaseCounter {
     private winner_tiles: TileCount;
@@ -115,6 +116,8 @@ export class BaseCounter {
         // Check bomb
         const bomb_result = c_bomb_hu(
             this.valid,
+            this.deck_validator.possibleDecks,
+            this.door_clear,
             template_values,
             template_enabled_values
         );

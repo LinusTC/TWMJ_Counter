@@ -17,6 +17,7 @@ import {
 } from "@/components/call_deck_classifier/call_deck_classifier";
 import { optimizeImage, OptimizedImage } from "@/utils/camera_helpers";
 import { BaseCounter } from "@/components/deck_counter/base_counter";
+import { DeckValidator } from "@/components/deck_validator/deck_validator";
 import { TileCount, base_results } from "@/types/counter";
 import { ScoringTemplate } from "@/types/database";
 import { getAllScoringTemplates, saveGameHistory } from "@/utils/database";
@@ -26,6 +27,7 @@ import { sortTilesByPosition } from "@/utils/camera_helpers";
 import GameParameters from "@/components/camera_helpers/GameParameters";
 import Results from "@/components/camera_helpers/Results";
 import EditDetectedTilesModal from "@/components/camera_helpers/EditDetectedTilesModal";
+import { c_special_hu } from "@/components/deck_counter/counter_helpers/c_special_hu";
 
 export default function Camera() {
     const [permission, requestPermission] = useCameraPermissions();
@@ -98,6 +100,19 @@ export default function Camera() {
             }
             try {
                 const tileCount = convertToTileCount(detectedTiles);
+
+                const validator = new DeckValidator(tileCount);
+                const isValid = validator.fullCheck();
+                if (isValid && validator.possibleDecks.length > 0) {
+                    const isSpecialHu = c_special_hu(
+                        validator.possibleDecks[0]
+                    );
+                    if (isSpecialHu && !doorClear) {
+                        setDoorClear(true);
+                        return;
+                    }
+                }
+
                 const counter = new BaseCounter(
                     tileCount,
                     winnerSeat,
