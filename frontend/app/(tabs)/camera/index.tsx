@@ -52,6 +52,7 @@ export default function Camera() {
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
     const [showWinningTileModal, setShowWinningTileModal] =
         useState<boolean>(false);
+    const [imageRotation, setImageRotation] = useState<number>(0);
     const cameraRef = useRef<CameraView>(null);
 
     useEffect(() => {
@@ -263,6 +264,11 @@ export default function Camera() {
         setDetectedTiles([]);
         setCountingResults(null);
         setWinningTile("");
+        setImageRotation(0);
+    };
+
+    const rotateImage = () => {
+        setImageRotation((prev) => (prev + 90) % 360);
     };
 
     const handleSaveEditedTiles = (editedTileKeys: string[]) => {
@@ -284,6 +290,8 @@ export default function Camera() {
                     capturedImage={capturedImage}
                     cameraRef={cameraRef}
                     onRequestPermission={requestPermission}
+                    imageRotation={imageRotation}
+                    onRotate={rotateImage}
                 />
                 <View style={styles.actionRow}>
                     <Pressable

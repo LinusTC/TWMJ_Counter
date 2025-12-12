@@ -227,11 +227,6 @@ export const valueConstants: ValueConstant[] = [
         defaultValue: 20,
     },
     {
-        key: "no_zifa_ping_hu_value_add_on",
-        label: "No Zifa Ping Hu Bonus",
-        defaultValue: 2,
-    },
-    {
         key: "small_3_wind_value",
         label: "Small Three Wind",
         defaultValue: 15,
