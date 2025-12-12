@@ -63,6 +63,10 @@ export default function EditDetectedTilesModal({
         onClose();
     };
 
+    const handleClearAll = () => {
+        setTiles([]);
+    };
+
     // Organize tiles by category
     const tileCategories = [
         {
@@ -111,9 +115,21 @@ export default function EditDetectedTilesModal({
 
                     {/* Detected Tiles Section - Row by row like DetectedTiles.tsx */}
                     <View style={styles.detectedSection}>
-                        <Text style={styles.sectionTitle}>
-                            Detected Tiles ({tiles.length})
-                        </Text>
+                        <View style={styles.detectedHeader}>
+                            <Text style={styles.sectionTitle}>
+                                Detected Tiles ({tiles.length})
+                            </Text>
+                            {tiles.length > 0 && (
+                                <Pressable
+                                    onPress={handleClearAll}
+                                    style={styles.clearButton}
+                                >
+                                    <Text style={styles.clearButtonText}>
+                                        Clear All
+                                    </Text>
+                                </Pressable>
+                            )}
+                        </View>
                         <ScrollView
                             style={styles.detectedTilesScrollView}
                             contentContainerStyle={
@@ -253,10 +269,26 @@ const styles = StyleSheet.create({
     detectedSection: {
         gap: 8,
     },
+    detectedHeader: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+    },
     sectionTitle: {
         fontSize: 16,
         fontWeight: "600",
         color: "#0a3d34",
+    },
+    clearButton: {
+        paddingVertical: 6,
+        paddingHorizontal: 12,
+        borderRadius: 8,
+        backgroundColor: "rgba(176, 65, 62, 0.1)",
+    },
+    clearButtonText: {
+        color: "#b0413e",
+        fontWeight: "600",
+        fontSize: 13,
     },
     detectedTilesScrollView: {
         maxHeight: 150,
