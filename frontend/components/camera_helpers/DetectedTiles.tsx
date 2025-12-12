@@ -40,6 +40,7 @@ export default function DetectedTiles({
                                     <Image
                                         source={tileSource}
                                         style={styles.tileImage}
+                                        contentFit="contain"
                                     />
                                 ) : (
                                     <View style={styles.placeholderTile}>
@@ -112,8 +113,6 @@ const styles = StyleSheet.create({
     tileImage: {
         width: DISPLAY_TILE_SIZE,
         height: DISPLAY_TILE_SIZE,
-        resizeMode: "cover",
-        backgroundColor: "transparent",
     },
     placeholderTile: {
         width: DISPLAY_TILE_SIZE,

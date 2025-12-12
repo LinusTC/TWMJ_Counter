@@ -198,6 +198,7 @@ export default function GameParameters({
                             <Image
                                 source={tileImageMap[winningTile]}
                                 style={styles.winningTileImage}
+                                contentFit="contain"
                             />
                         ) : (
                             <View style={styles.blankTilePlaceholder}>
@@ -332,11 +333,11 @@ const styles = StyleSheet.create({
         color: "#fff",
     },
     winningTileImageButton: {
-        width: 40,
-        height: 60,
+        width: 45,
+        height: 66.5,
         justifyContent: "center",
         alignItems: "center",
-        padding: 2,
+        padding: 6,
         borderRadius: 8,
         borderWidth: 2,
         borderColor: "#166b60",

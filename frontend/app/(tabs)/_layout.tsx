@@ -1,34 +1,46 @@
 import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
+import type { ViewStyle } from "react-native";
 
 const tab_icon_size = 26;
+const tabBarBaseStyle: ViewStyle = {
+    position: "absolute",
+    backgroundColor: "#166b60",
+    borderRadius: 25,
+    marginHorizontal: 20,
+    marginBottom: 30,
+    height: 70,
+    paddingBottom: 10,
+    paddingTop: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
+};
 
 export default function TabsLayout() {
     return (
         <Tabs
-            screenOptions={{
-                tabBarStyle: {
-                    position: "absolute",
-                    backgroundColor: "#166b60",
-                    borderRadius: 25,
-                    marginHorizontal: 20,
-                    marginBottom: 30,
-                    height: 70,
-                    paddingBottom: 10,
-                    paddingTop: 10,
-                    shadowColor: "#000",
-                    shadowOffset: { width: 0, height: 4 },
-                    shadowOpacity: 0.3,
-                    shadowRadius: 4,
-                    elevation: 5,
-                },
-                tabBarActiveTintColor: "#ffffff",
-                tabBarInactiveTintColor: "rgba(255, 255, 255, 0.6)",
-                headerShown: false,
+            screenOptions={({ route }) => {
+                const focusedRouteName =
+                    getFocusedRouteNameFromRoute(route) ?? "index";
+                const shouldHideTabBar =
+                    route.name === "play" && focusedRouteName === "in-game";
+
+                return {
+                    tabBarStyle: shouldHideTabBar
+                        ? { ...tabBarBaseStyle, display: "none" }
+                        : tabBarBaseStyle,
+                    tabBarActiveTintColor: "#ffffff",
+                    tabBarInactiveTintColor: "rgba(255, 255, 255, 0.6)",
+                    headerShown: false,
+                };
             }}
         >
             <Tabs.Screen
-                name="play/index"
+                name="play"
                 options={{
                     title: "Play",
                     tabBarIcon: ({ color }) => (

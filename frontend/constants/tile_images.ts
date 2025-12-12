@@ -54,4 +54,4 @@ export const tileImageMap: TileImageMap = {
     ff4: require("@/assets/tiles/ff4.png"),
 };
 
-export const DISPLAY_TILE_SIZE = "155%"
+export const DISPLAY_TILE_SIZE = "120%"

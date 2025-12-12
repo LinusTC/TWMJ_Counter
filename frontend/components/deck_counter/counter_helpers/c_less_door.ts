@@ -27,7 +27,7 @@ export function c_less_door(
         for (const item of curr_validated_tiles.tiles) {
             const tiles = Array.isArray(item) ? item : [item];
 
-            if (tiles.length > 2) {
+            if (tiles.length > 1) {
                 doors.add(tiles[0][0]);
             }
         }

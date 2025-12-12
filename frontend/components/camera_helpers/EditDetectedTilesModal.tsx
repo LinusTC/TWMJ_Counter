@@ -274,8 +274,8 @@ const styles = StyleSheet.create({
         justifyContent: "flex-start",
     },
     tileSlot: {
-        width: 45,
-        height: 67.5,
+        width: 42,
+        height: 63,
         position: "relative",
         alignItems: "center",
         justifyContent: "center",

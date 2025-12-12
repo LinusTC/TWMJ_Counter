@@ -341,7 +341,7 @@ export default function Camera() {
                         }
                     />
                     <Results countingResults={countingResults} />
-                    {capturedImage &&
+                    {countingResults &&
                         detectedTiles.length > 0 &&
                         countingResults && (
                             <Pressable
