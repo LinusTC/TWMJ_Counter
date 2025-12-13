@@ -34,5 +34,5 @@ export function c_zhuang(
             temp_logs.push(`連莊 ${lum_zhuang}x +${lum_zhuang_total}`);
         }
     }
-    return { value: temp_value, log: temp_logs };
+    return { value: temp_value, log: temp_logs, counted: temp_value > 0 };
 }

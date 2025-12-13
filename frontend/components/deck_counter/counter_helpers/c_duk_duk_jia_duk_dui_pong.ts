@@ -9,7 +9,7 @@ export function c_duk_duk_jia_duk_dui_pong(
     template_enabled_values: Record<string, boolean>
 ): CounterResult {
     if (!winning_tile) {
-        return { value: 0, log: null };
+        return { value: 0, log: null, counted: false };
     }
 
     const groups_with_winning_tile: Map<string, string[]> = new Map();
@@ -46,6 +46,7 @@ export function c_duk_duk_jia_duk_dui_pong(
             return {
                 value: real_solo_value,
                 log: `獨獨 +${real_solo_value}`,
+                counted: true,
             };
         }
 
@@ -63,6 +64,7 @@ export function c_duk_duk_jia_duk_dui_pong(
             return {
                 value: real_solo_value,
                 log: `獨獨 +${real_solo_value}`,
+                counted: true,
             };
         }
     }
@@ -82,6 +84,7 @@ export function c_duk_duk_jia_duk_dui_pong(
                 return {
                     value: fake_solo_value,
                     log: `假獨 +${fake_solo_value}`,
+                    counted: true,
                 };
             }
         }
@@ -98,10 +101,11 @@ export function c_duk_duk_jia_duk_dui_pong(
                 return {
                     value: double_pong_value,
                     log: `對碰 +${double_pong_value}`,
+                    counted: true,
                 };
             }
         }
     }
 
-    return { value: 0, log: null };
+    return { value: 0, log: null, counted: false };
 }

@@ -1,13 +1,12 @@
+import { KANG_KANG_HU, DUI_DUI_HU, PING_HU } from "@/constants/dictionary";
+
 // Type definitions for Taiwanese Mahjong counter
 export type TileCount = Record<string, number>;
 
 export interface CounterResult {
     value: number;
     log: string | string[] | null;
-}
-
-export interface BombHuResult extends CounterResult {
-    is_bomb_hu: boolean;
+    counted: boolean;
 }
 
 export interface FlowerResult extends CounterResult {
@@ -22,7 +21,11 @@ export interface FanResult extends CounterResult {
 }
 
 export interface DuiDuiResult extends CounterResult {
-    type_of_hu: "kang_kang_hu" | "dui_dui_hu" | "ping_hu" | null;
+    type_of_hu: typeof KANG_KANG_HU | typeof DUI_DUI_HU | typeof PING_HU | null;
+}
+
+export interface DragonResult extends CounterResult {
+    pureDragonSuit: string | null; // Which suit the pure dragon is in, null for mixed or no dragon
 }
 
 export interface ValidatedDeck {

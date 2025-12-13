@@ -77,8 +77,8 @@ class FullCounter:
             
             #No flower and no 字
             if not has_flower and not has_fan:
-                temp_value += noFlower_noZFB_nowind_value_add_on
-                _add_to_log(f'無字無花再加 +{noFlower_noZFB_nowind_value_add_on}', temp_logs)
+                temp_value += no_zifa
+                _add_to_log(f'無字無花再加 +{no_zifa}', temp_logs)
 
             #正花正位
             if counted_flower_pos and counted_wind_pos:

@@ -217,12 +217,12 @@ export function c_fan(
     const has_fan = has_wind || has_zfb;
 
     if (!has_wind && !has_zfb) {
-        const wind_value = template_values.wind_value || 0;
         return {
-            value: wind_value,
-            log: `無字 +${wind_value}`,
+            value: 0,
+            log: null,
             hasFan: has_fan,
             countedPos: counted_pos,
+            counted: false,
         };
     }
 
@@ -233,5 +233,6 @@ export function c_fan(
         log,
         hasFan: has_fan,
         countedPos: counted_pos,
+        counted: value > 0,
     };
 }

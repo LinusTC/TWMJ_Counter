@@ -38,5 +38,6 @@ export function c_ban_gao(
     return {
         value: total_value,
         log: log.length > 0 ? log : null,
+        counted: total_value>0,
     };
 }

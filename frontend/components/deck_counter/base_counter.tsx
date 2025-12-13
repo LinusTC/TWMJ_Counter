@@ -27,7 +27,7 @@ import { c_dui_dui_or_ping_or_kang_kang_hu } from "./counter_helpers/c_dui_dui_o
 import { c_dragons } from "./counter_helpers/c_dragons";
 import { getTemplateById } from "@/utils/database";
 import { c_zhuang } from "./counter_helpers/c_zhuang";
-import { c_special_hu } from "./counter_helpers/c_special_hu";
+import { c_no_zifa } from "./counter_helpers/c_no_zifa";
 
 export class BaseCounter {
     private winner_tiles: TileCount;
@@ -100,6 +100,9 @@ export class BaseCounter {
         let winning_deck_organized: ValidatedDeck | null = null;
         let max_calculated_points: number = 0;
 
+        let counted_5_doors = false;
+        let counted_13_waist = false;
+
         const add_to_log = (
             curr_logs: string | string[] | null,
             temp_logs: string[]
@@ -121,7 +124,7 @@ export class BaseCounter {
             template_values,
             template_enabled_values
         );
-        if (bomb_result.is_bomb_hu) {
+        if (bomb_result.counted) {
             this.final_value = bomb_result.value;
             add_to_log(bomb_result.log, this.logs);
             return {
@@ -138,6 +141,33 @@ export class BaseCounter {
             let temp_logs: string[] = [];
             this.curr_validated_tiles = this.deck_validator.possibleDecks[i];
 
+            // Initialize counter tracking variables
+            let counted_door_clear_zimo = false;
+            let counted_zhuang = false;
+            let counted_flower = false;
+            let counted_fan = false;
+            let counted_16bd = false;
+            let counted_13waist = false;
+            let counted_ligu = false;
+            let counted_duk_duk = false;
+            let counted_general_eyes = false;
+            let counted_gong = false;
+            let counted_two_or_three_numbers = false;
+            let counted_only_fan = false;
+            let counted_only_one_nine = false;
+            let counted_break_waist = false;
+            let counted_same_house = false;
+            let counted_less_door = false;
+            let counted_5_doors = false;
+            let counted_lao_shao = false;
+            let counted_ban_gao = false;
+            let counted_bu_bu_gao = false;
+            let counted_sister = false;
+            let counted_sister_pong = false;
+            let counted_dui_dui = false;
+            let counted_dragons = false;
+            let counted_no_zifa = false;
+
             //Check zimo and door clear
             const door_clear_zimo_result = c_door_clear_zimo(
                 this.myself_mo,
@@ -148,6 +178,7 @@ export class BaseCounter {
             );
             temp_value += door_clear_zimo_result.value;
             add_to_log(door_clear_zimo_result.log, temp_logs);
+            counted_door_clear_zimo = door_clear_zimo_result.counted;
 
             //Check Zhuang Jia
             const zhuang_result = c_zhuang(
@@ -159,6 +190,7 @@ export class BaseCounter {
             );
             temp_value += zhuang_result.value;
             add_to_log(zhuang_result.log, temp_logs);
+            counted_zhuang = zhuang_result.counted;
 
             //Check flower
             const flower_result = c_flower(
@@ -170,6 +202,7 @@ export class BaseCounter {
             );
             temp_value += flower_result.value;
             add_to_log(flower_result.log, temp_logs);
+            counted_flower = flower_result.counted;
             const has_flower = flower_result.hasFlower;
             const counted_flower_pos = flower_result.countedPos;
 
@@ -194,18 +227,36 @@ export class BaseCounter {
             );
             temp_value += fan_result.value;
             add_to_log(fan_result.log, temp_logs);
+            counted_fan = fan_result.counted;
             const has_fan = fan_result.hasFan;
             const counted_fan_pos = fan_result.countedPos;
 
+            console.log(has_fan, has_flower);
+            //ping hu or dui dui hu
+            const dui_dui_results = c_dui_dui_or_ping_or_kang_kang_hu(
+                this.curr_validated_tiles,
+                this.myself_mo,
+                this.door_clear,
+                has_flower,
+                has_fan,
+                template_values,
+                template_enabled_values
+            );
+            temp_value += dui_dui_results.value;
+            add_to_log(dui_dui_results.log, temp_logs);
+            counted_dui_dui = dui_dui_results.counted;
+
             //No fan and no flower
-            if (!(has_flower || has_fan)) {
-                temp_value +=
-                    defaultValues.noFlower_noZFB_nowind_value_add_on_value;
-                add_to_log(
-                    `無字無花再加 ${defaultValues.noFlower_noZFB_nowind_value_add_on_value}`,
-                    temp_logs
-                );
-            }
+            const no_zifa_results = c_no_zifa(
+                has_flower,
+                has_fan,
+                dui_dui_results.type_of_hu,
+                template_values,
+                template_enabled_values
+            );
+            temp_value += no_zifa_results.value;
+            add_to_log(no_zifa_results.log, temp_logs);
+            counted_no_zifa = no_zifa_results.counted;
 
             //Correct fan and flower seat
             if (counted_flower_pos && counted_fan_pos) {
@@ -225,6 +276,7 @@ export class BaseCounter {
             );
             temp_value += sixteenbd_results.value;
             add_to_log(sixteenbd_results.log, temp_logs);
+            counted_16bd = sixteenbd_results.counted;
 
             //13 waist
             const thirteen_waist_results = c_13waist(
@@ -235,6 +287,7 @@ export class BaseCounter {
             );
             temp_value += thirteen_waist_results.value;
             add_to_log(thirteen_waist_results.log, temp_logs);
+            counted_13waist = thirteen_waist_results.counted;
 
             //Ligu
             const ligu_results = c_ligu(
@@ -245,6 +298,7 @@ export class BaseCounter {
             );
             temp_value += ligu_results.value;
             add_to_log(ligu_results.log, temp_logs);
+            counted_ligu = ligu_results.counted;
 
             //duk duk, jia duk
             const duk_duk_results = c_duk_duk_jia_duk_dui_pong(
@@ -255,6 +309,7 @@ export class BaseCounter {
             );
             temp_value += duk_duk_results.value;
             add_to_log(duk_duk_results.log, temp_logs);
+            counted_duk_duk = duk_duk_results.counted;
 
             //general eyes
             const general_eyes_results = c_general_eyes(
@@ -264,6 +319,7 @@ export class BaseCounter {
             );
             temp_value += general_eyes_results.value;
             add_to_log(general_eyes_results.log, temp_logs);
+            counted_general_eyes = general_eyes_results.counted;
 
             //gong
             const gong_results = c_gong_or_4_turtle(
@@ -274,6 +330,7 @@ export class BaseCounter {
             );
             temp_value += gong_results.value;
             add_to_log(gong_results.log, temp_logs);
+            counted_gong = gong_results.counted;
 
             //2 or 3 numbers only
             const two_or_three_numbers_results = c_two_or_three_numbers_only(
@@ -284,6 +341,7 @@ export class BaseCounter {
             );
             temp_value += two_or_three_numbers_results.value;
             add_to_log(two_or_three_numbers_results.log, temp_logs);
+            counted_two_or_three_numbers = two_or_three_numbers_results.counted;
 
             //Only fan tiles
             const only_fan_results = c_only_fan(
@@ -293,6 +351,7 @@ export class BaseCounter {
             );
             temp_value += only_fan_results.value;
             add_to_log(only_fan_results.log, temp_logs);
+            counted_only_fan = only_fan_results.counted;
 
             //Only 1 9 tiles
             const only_one_nine_results = c_only_one_or_nine(
@@ -303,6 +362,7 @@ export class BaseCounter {
             );
             temp_value += only_one_nine_results.value;
             add_to_log(only_one_nine_results.log, temp_logs);
+            counted_only_one_nine = only_one_nine_results.counted;
 
             //Break waist
             const break_waist_results = c_break_waist(
@@ -313,6 +373,7 @@ export class BaseCounter {
             );
             temp_value += break_waist_results.value;
             add_to_log(break_waist_results.log, temp_logs);
+            counted_break_waist = break_waist_results.counted;
 
             //Test same house
             const same_house_results = c_same_house(
@@ -323,6 +384,7 @@ export class BaseCounter {
             );
             temp_value += same_house_results.value;
             add_to_log(same_house_results.log, temp_logs);
+            counted_same_house = same_house_results.counted;
 
             //2 house
             const less_door_results = c_less_door(
@@ -333,6 +395,7 @@ export class BaseCounter {
             );
             temp_value += less_door_results.value;
             add_to_log(less_door_results.log, temp_logs);
+            counted_less_door = less_door_results.counted;
 
             //5 house
             const five_doors_results = c_5_doors(
@@ -342,74 +405,7 @@ export class BaseCounter {
             );
             temp_value += five_doors_results.value;
             add_to_log(five_doors_results.log, temp_logs);
-
-            //Test lao shao
-            const lao_shao_results = c_lao_shao(
-                this.curr_validated_tiles,
-                template_values,
-                template_enabled_values
-            );
-            temp_value += lao_shao_results.value;
-            add_to_log(lao_shao_results.log, temp_logs);
-
-            //Test ban gao
-            const ban_gao_results = c_ban_gao(
-                this.curr_validated_tiles,
-                template_values,
-                template_enabled_values
-            );
-            temp_value += ban_gao_results.value;
-            add_to_log(ban_gao_results.log, temp_logs);
-
-            //Test bubu gao
-            const bu_bu_gao_results = c_step_step_high(
-                this.curr_validated_tiles,
-                template_values,
-                template_enabled_values
-            );
-            temp_value += bu_bu_gao_results.value;
-            add_to_log(bu_bu_gao_results.log, temp_logs);
-
-            //Test sister
-            const sister_results = c_sister(
-                this.curr_validated_tiles,
-                template_values,
-                template_enabled_values
-            );
-            temp_value += sister_results.value;
-            add_to_log(sister_results.log, temp_logs);
-
-            //Test sister pong
-            const sister_pong_results = c_sister_pong(
-                this.curr_validated_tiles,
-                template_values,
-                template_enabled_values
-            );
-            temp_value += sister_pong_results.value;
-            add_to_log(sister_pong_results.log, temp_logs);
-
-            //ping hu or dui dui hu
-            const dui_dui_results = c_dui_dui_or_ping_or_kang_kang_hu(
-                this.curr_validated_tiles,
-                this.myself_mo,
-                this.door_clear,
-                template_values,
-                template_enabled_values
-            );
-            temp_value += dui_dui_results.value;
-            add_to_log(dui_dui_results.log, temp_logs);
-
-            if (
-                dui_dui_results.type_of_hu === "ping_hu" &&
-                !has_flower &&
-                !has_fan
-            ) {
-                temp_value += defaultValues.no_zifa_ping_hu_value_add_on_value;
-                add_to_log(
-                    `無字花平胡再加 +${defaultValues.no_zifa_ping_hu_value_add_on_value}`,
-                    temp_logs
-                );
-            }
+            counted_5_doors = five_doors_results.counted;
 
             //dragons
             const dragons_results = c_dragons(
@@ -419,7 +415,60 @@ export class BaseCounter {
             );
             temp_value += dragons_results.value;
             add_to_log(dragons_results.log, temp_logs);
+            counted_dragons = dragons_results.counted;
 
+            //Test lao shao
+            const lao_shao_results = c_lao_shao(
+                this.curr_validated_tiles,
+                template_values,
+                template_enabled_values,
+                dragons_results.pureDragonSuit
+            );
+            temp_value += lao_shao_results.value;
+            add_to_log(lao_shao_results.log, temp_logs);
+            counted_lao_shao = lao_shao_results.counted;
+
+            //Test ban gao
+            const ban_gao_results = c_ban_gao(
+                this.curr_validated_tiles,
+                template_values,
+                template_enabled_values
+            );
+            temp_value += ban_gao_results.value;
+            add_to_log(ban_gao_results.log, temp_logs);
+            counted_ban_gao = ban_gao_results.counted;
+
+            //Test bubu gao
+            const bu_bu_gao_results = c_step_step_high(
+                this.curr_validated_tiles,
+                template_values,
+                template_enabled_values
+            );
+            temp_value += bu_bu_gao_results.value;
+            add_to_log(bu_bu_gao_results.log, temp_logs);
+            counted_bu_bu_gao = bu_bu_gao_results.counted;
+
+            //Test sister
+            const sister_results = c_sister(
+                this.curr_validated_tiles,
+                template_values,
+                template_enabled_values
+            );
+            temp_value += sister_results.value;
+            add_to_log(sister_results.log, temp_logs);
+            counted_sister = sister_results.counted;
+
+            //Test sister pong
+            const sister_pong_results = c_sister_pong(
+                this.curr_validated_tiles,
+                template_values,
+                template_enabled_values
+            );
+            temp_value += sister_pong_results.value;
+            add_to_log(sister_pong_results.log, temp_logs);
+            counted_sister_pong = sister_pong_results.counted;
+
+            //TALLY UP THE RESULTS
             const calculated_points = temp_value;
             temp_value *= multiplier;
             temp_value += base_value;

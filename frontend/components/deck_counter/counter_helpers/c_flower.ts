@@ -1,5 +1,5 @@
 import { TileCount, ValidatedDeck, FlowerResult } from "@/types/counter";
-import { FLOWER_DICT, flower_hu } from "@/constants/dictionary";
+import { FLOWER_DICT, FLOWER_HU } from "@/constants/dictionary";
 
 export class FlowerCounter {
     private winner_seat: number;
@@ -77,15 +77,16 @@ export function c_flower(
     );
     const [flowerValue, has_flower, counted_pos] =
         flowerCounter.countFlowerValue();
-    const has_flower_hu = curr_validated_tiles.hu_type === flower_hu;
+    const has_flower_hu = curr_validated_tiles.hu_type === FLOWER_HU;
 
     if (!has_flower) {
         return {
-            value: flowerValue,
-            log: `無花 +${flowerValue}`,
+            value: 0,
+            log: null,
             hasFlowerHu: has_flower_hu,
             hasFlower: has_flower,
             countedPos: counted_pos,
+            counted: false,
         };
     }
 
@@ -101,6 +102,7 @@ export function c_flower(
                 hasFlowerHu: has_flower_hu,
                 hasFlower: has_flower,
                 countedPos: counted_pos,
+                counted: true,
             };
         }
         const value = template_values[value_key] || 0;
@@ -110,6 +112,7 @@ export function c_flower(
             hasFlowerHu: has_flower_hu,
             hasFlower: has_flower,
             countedPos: counted_pos,
+            counted: true,
         };
     }
 
@@ -120,6 +123,7 @@ export function c_flower(
             hasFlowerHu: has_flower_hu,
             hasFlower: has_flower,
             countedPos: counted_pos,
+            counted: true,
         };
     }
 
@@ -129,5 +133,6 @@ export function c_flower(
         hasFlowerHu: false,
         hasFlower: false,
         countedPos: false,
+        counted: false,
     };
 }

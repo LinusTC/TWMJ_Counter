@@ -1,11 +1,11 @@
-import { ValidatedDeck, CounterResult } from "@/types/counter";
+import { ValidatedDeck, DragonResult } from "@/types/counter";
 import { ZFB_DICT, WIND_DICT, MST_DICT } from "@/constants/dictionary";
 
 export function c_dragons(
     curr_validated_tiles: ValidatedDeck,
     template_values: Record<string, number>,
     template_enabled_values: Record<string, boolean>
-): CounterResult {
+): DragonResult {
     const number_counter: boolean[] = Array(9).fill(false);
     const suit_counter: (Set<string> | null)[] = Array(9).fill(null);
     const valid_tiles = [
@@ -53,6 +53,7 @@ export function c_dragons(
 
     if (number_counter.every((val) => val === true)) {
         let same_house_dragon = false;
+        let pureDragonSuit: string | null = null;
 
         if (suit_counter[0]) {
             for (const suit of suit_counter[0]) {
@@ -65,6 +66,7 @@ export function c_dragons(
                 }
                 if (suit_in_all) {
                     same_house_dragon = true;
+                    pureDragonSuit = suit;
                     break;
                 }
             }
@@ -79,6 +81,8 @@ export function c_dragons(
             return {
                 value: light_same_dragon_value,
                 log: `明清龍 +${light_same_dragon_value}`,
+                counted: true,
+                pureDragonSuit,
             };
         }
 
@@ -88,6 +92,8 @@ export function c_dragons(
             return {
                 value: light_mixed_dragon_value,
                 log: `明混龍 +${light_mixed_dragon_value}`,
+                counted: true,
+                pureDragonSuit: null, // Mixed dragon, no single suit
             };
         }
     }
@@ -95,5 +101,7 @@ export function c_dragons(
     return {
         value: 0,
         log: null,
+        counted: false,
+        pureDragonSuit: null,
     };
 }

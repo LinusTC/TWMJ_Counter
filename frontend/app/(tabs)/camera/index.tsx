@@ -28,7 +28,7 @@ import GameParameters from "@/components/camera_helpers/GameParameters";
 import Results from "@/components/camera_helpers/Results";
 import EditDetectedTilesModal from "@/components/camera_helpers/EditDetectedTilesModal";
 import SelectWinningTileModal from "@/components/camera_helpers/SelectWinningTileModal";
-import { c_special_hu } from "@/components/deck_counter/counter_helpers/c_special_hu";
+import { checkIsSpecialHu } from "@/utils/mj_helpers";
 
 export default function Camera() {
     const [permission, requestPermission] = useCameraPermissions();
@@ -108,7 +108,7 @@ export default function Camera() {
                 const validator = new DeckValidator(tileCount);
                 const isValid = validator.fullCheck();
                 if (isValid && validator.possibleDecks.length > 0) {
-                    const isSpecialHu = c_special_hu(
+                    const isSpecialHu = checkIsSpecialHu(
                         validator.possibleDecks[0]
                     );
                     if (isSpecialHu && !doorClear) {

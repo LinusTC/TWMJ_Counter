@@ -26,6 +26,7 @@ export function c_only_one_or_nine(
             return {
                 value: 0,
                 log: null,
+                counted: false,
             };
         }
     }
@@ -34,7 +35,7 @@ export function c_only_one_or_nine(
         ? "one_nine_with_fan_value"
         : "only_one_nine_value";
     if (!template_enabled_values[value_key]) {
-        return { value: 0, log: null };
+        return { value: 0, log: null, counted: false };
     }
 
     const value = template_values[value_key] || 0;
@@ -45,5 +46,6 @@ export function c_only_one_or_nine(
     return {
         value,
         log,
+        counted: true,
     };
 }

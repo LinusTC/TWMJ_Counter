@@ -1,5 +1,5 @@
 import { ValidatedDeck, CounterResult } from "@/types/counter";
-import { sixteen_bd_hu } from "@/constants/dictionary";
+import { SIXTEEN_BD_HU } from "@/constants/dictionary";
 
 export function c_16bd(
     curr_validated_tiles: ValidatedDeck,
@@ -8,7 +8,7 @@ export function c_16bd(
     template_enabled_values: Record<string, boolean>
 ): CounterResult {
     if (
-        curr_validated_tiles.hu_type === sixteen_bd_hu &&
+        curr_validated_tiles.hu_type === SIXTEEN_BD_HU &&
         door_clear &&
         template_enabled_values.sixteenbd_value
     ) {
@@ -16,7 +16,8 @@ export function c_16bd(
         return {
             value: sixteenbd_value,
             log: `16不搭 ${sixteenbd_value}`,
+            counted: true,
         };
     }
-    return { value: 0, log: null };
+    return { value: 0, log: null, counted: false };
 }

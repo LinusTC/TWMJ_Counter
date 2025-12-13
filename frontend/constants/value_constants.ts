@@ -142,11 +142,6 @@ export const valueConstants: ValueConstant[] = [
         defaultValue: 5,
     },
     {
-        key: "noFlower_noZFB_nowind_value_add_on",
-        label: "No Flower/ZFB/Wind Bonus",
-        defaultValue: 3,
-    },
-    {
         key: "five_door_value",
         label: "Five Door",
         defaultValue: 5,
@@ -342,14 +337,14 @@ export const valueConstants: ValueConstant[] = [
         defaultValue: 1,
     },
     {
-        key: "noFlower_noZFB_nowind_value_add_on_value",
-        label: "noFlower_noZFB_nowind_value_add_on",
-        defaultValue: 3,
+        key: "no_zifa_value",
+        label: "no_zifa",
+        defaultValue: 5,
     },
     {
-        key: "no_zifa_ping_hu_value_add_on_value",
-        label: "no_zifa_ping_hu_value_add_on",
-        defaultValue: 2,
+        key: "no_zifa_ping_hu_value",
+        label: "no_zifa_ping_hu",
+        defaultValue: 12,
     },
 ];
 

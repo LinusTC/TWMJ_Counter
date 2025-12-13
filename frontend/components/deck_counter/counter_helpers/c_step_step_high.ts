@@ -89,5 +89,6 @@ export function c_step_step_high(
     return {
         value: total_value,
         log: log.length > 0 ? log : null,
+        counted: total_value > 0,
     };
 }

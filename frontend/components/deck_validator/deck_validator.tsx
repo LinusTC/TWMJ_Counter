@@ -6,11 +6,11 @@ import {
     S_DICT,
     T_DICT,
     TSM_NAME,
-    flower_hu,
-    ligu_hu,
-    sixteen_bd_hu,
-    thirteen_waist_hu,
-    standard_hu,
+    FLOWER_HU,
+    LIGU_HU,
+    SIXTEEN_BD_HU,
+    THIRTEEN_WAIST_HU,
+    STANDARD_HU,
 } from "../../constants/dictionary";
 import { removeFlowers, cleanTiles } from "../../utils/mj_helpers";
 import { TileCount, ValidatedDeck } from "../../types/counter";
@@ -85,7 +85,7 @@ export class DeckValidator {
         }
 
         if (flowers.length >= 7) {
-            return { hu_type: flower_hu, flowers };
+            return { hu_type: FLOWER_HU, flowers };
         }
 
         return null;
@@ -95,7 +95,7 @@ export class DeckValidator {
         if (this.cardCount(tiles) !== 17) return null;
 
         const results: ValidatedDeck = {
-            hu_type: ligu_hu,
+            hu_type: LIGU_HU,
             tiles: [],
             eyes: null,
         };
@@ -185,7 +185,7 @@ export class DeckValidator {
             }
         }
 
-        return { hu_type: sixteen_bd_hu, eyes: eyes[0], tiles: allTiles };
+        return { hu_type: SIXTEEN_BD_HU, eyes: eyes[0], tiles: allTiles };
     }
 
     private thirteenWaistCheck(tiles: TileCount): ValidatedDeck | null {
@@ -247,7 +247,7 @@ export class DeckValidator {
                     tilesList.push([tile]);
                 }
                 return {
-                    hu_type: thirteen_waist_hu,
+                    hu_type: THIRTEEN_WAIST_HU,
                     eyes: eye,
                     tiles: tilesList,
                 };
@@ -289,7 +289,7 @@ export class DeckValidator {
                     if (!seenDecks.has(deckKey)) {
                         seenDecks.add(deckKey);
                         results.push({
-                            hu_type: standard_hu,
+                            hu_type: STANDARD_HU,
                             eyes: eye,
                             tiles: completeSets,
                         });

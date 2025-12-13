@@ -30,6 +30,7 @@ export function c_two_or_three_numbers_only(
         return {
             value,
             log: `三数 有番子 +${value}`,
+            counted: true,
         };
     }
 
@@ -42,6 +43,7 @@ export function c_two_or_three_numbers_only(
         return {
             value,
             log: `三数 無番子 +${value}`,
+            counted: true,
         };
     }
 
@@ -54,6 +56,7 @@ export function c_two_or_three_numbers_only(
         return {
             value,
             log: `兩数 有番子 +${value}`,
+            counted: true,
         };
     }
 
@@ -66,8 +69,9 @@ export function c_two_or_three_numbers_only(
         return {
             value,
             log: `兩数 無番子 +${value}`,
+            counted: true,
         };
     }
 
-    return { value: 0, log: null };
+    return { value: 0, log: null, counted: false };
 }

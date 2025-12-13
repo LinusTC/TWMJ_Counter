@@ -19,8 +19,9 @@ export function c_general_eyes(
             return {
                 value: general_eye_value,
                 log: `將眼 +${general_eye_value}`,
+                counted: true,
             };
         }
     }
-    return { value: 0, log: null };
+    return { value: 0, log: null, counted: false };
 }

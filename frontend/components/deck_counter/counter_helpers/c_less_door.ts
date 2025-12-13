@@ -12,6 +12,7 @@ export function c_less_door(
         return {
             value: 0,
             log: null,
+            counted: false,
         };
     }
 
@@ -19,6 +20,7 @@ export function c_less_door(
         return {
             value: 0,
             log: null,
+            counted: false,
         };
     }
 
@@ -37,16 +39,18 @@ export function c_less_door(
         return {
             value: 0,
             log: null,
+            counted: false,
         };
     }
 
     if (!template_enabled_values.less_one_door_value) {
-        return { value: 0, log: null };
+        return { value: 0, log: null, counted: false };
     }
 
     const less_one_door_value = template_values.less_one_door_value || 0;
     return {
         value: less_one_door_value,
         log: `缺一門 +${less_one_door_value}`,
+        counted: true,
     };
 }

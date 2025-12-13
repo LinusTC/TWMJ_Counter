@@ -12,6 +12,7 @@ export function c_5_doors(
         return {
             value: 0,
             log: null,
+            counted: false,
         };
     }
 
@@ -37,11 +38,13 @@ export function c_5_doors(
         return {
             value: five_door_value,
             log: `五門齊 +${five_door_value}`,
+            counted: true,
         };
     }
 
     return {
         value: 0,
         log: null,
+        counted: false,
     };
 }

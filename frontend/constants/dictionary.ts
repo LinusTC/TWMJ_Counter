@@ -68,8 +68,11 @@ export const PONG_DICT = "pong";
 export const GONG_DICT = "gong";
 
 // Types of Hu
-export const flower_hu = "花胡";
-export const ligu_hu = "Ligu";
-export const sixteen_bd_hu = "16不搭";
-export const thirteen_waist_hu = "十三么/腰";
-export const standard_hu = "普通胡";
+export const FLOWER_HU = "花胡";
+export const LIGU_HU = "Ligu";
+export const SIXTEEN_BD_HU = "16不搭";
+export const THIRTEEN_WAIST_HU = "十三么/腰";
+export const STANDARD_HU = "普通胡";
+export const PING_HU = "平胡";
+export const DUI_DUI_HU = "對對胡";
+export const KANG_KANG_HU = "嵌嵌糊";

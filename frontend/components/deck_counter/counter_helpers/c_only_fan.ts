@@ -7,7 +7,7 @@ export function c_only_fan(
     template_enabled_values: Record<string, boolean>
 ): CounterResult {
     if (!template_enabled_values.only_fan_value) {
-        return { value: 0, log: null };
+        return { value: 0, log: null, counted: false };
     }
 
     if (curr_validated_tiles.tiles) {
@@ -18,6 +18,7 @@ export function c_only_fan(
                     return {
                         value: 0,
                         log: null,
+                        counted: false,
                     };
                 }
             }
@@ -28,5 +29,6 @@ export function c_only_fan(
     return {
         value: only_fan_value,
         log: `全番子 +${only_fan_value}`,
+        counted: true,
     };
 }

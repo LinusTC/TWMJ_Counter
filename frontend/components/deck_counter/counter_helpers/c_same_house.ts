@@ -25,6 +25,7 @@ export function c_same_house(
         return {
             value: 0,
             log: null,
+            counted: false,
         };
     }
 
@@ -32,7 +33,7 @@ export function c_same_house(
         ? "same_house_with_fan_value"
         : "all_same_house_value";
     if (!template_enabled_values[value_key]) {
-        return { value: 0, log: null };
+        return { value: 0, log: null, counted: false };
     }
 
     const value = template_values[value_key] || 0;
@@ -41,5 +42,6 @@ export function c_same_house(
     return {
         value,
         log,
+        counted: true,
     };
 }

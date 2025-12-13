@@ -9,10 +9,11 @@ import {
 export function c_lao_shao(
     curr_validated_tiles: ValidatedDeck,
     template_values: Record<string, number>,
-    template_enabled_values: Record<string, boolean>
+    template_enabled_values: Record<string, boolean>,
+    pureDragonSuit: string | null
 ): CounterResult {
     if (!template_enabled_values.lao_shao_value) {
-        return { value: 0, log: null };
+        return { value: 0, log: null, counted: false };
     }
 
     const lao_shao_value = template_values.lao_shao_value || 0;
@@ -45,6 +46,11 @@ export function c_lao_shao(
 
     // Check each suit for lao shao patterns
     for (const [suit, tile_group] of Object.entries(suits)) {
+        // Skip this suit if it has a pure dragon
+        if (pureDragonSuit === suit) {
+            continue;
+        }
+
         const has_123 = tile_group.some(
             (group) =>
                 group.length === 3 &&
@@ -87,5 +93,6 @@ export function c_lao_shao(
     return {
         value,
         log: log.length > 0 ? log : null,
+        counted: value > 0,
     };
 }

@@ -1,3 +1,4 @@
+import { KANG_KANG_HU, DUI_DUI_HU, PING_HU } from "@/constants/dictionary";
 import { ValidatedDeck, DuiDuiResult } from "@/types/counter";
 import { checkIsSpecialHu } from "@/utils/mj_helpers";
 
@@ -5,10 +6,16 @@ export function c_dui_dui_or_ping_or_kang_kang_hu(
     curr_validated_tiles: ValidatedDeck,
     myself_mo: boolean,
     door_clear: boolean,
+    has_flower: boolean,
+    has_fan: boolean,
     template_values: Record<string, number>,
     template_enabled_values: Record<string, boolean>
 ): DuiDuiResult {
-    let type_of_hu: "kang_kang_hu" | "dui_dui_hu" | "ping_hu" | null = null;
+    let type_of_hu:
+        | typeof KANG_KANG_HU
+        | typeof DUI_DUI_HU
+        | typeof PING_HU
+        | null = null;
     const is_special_hu = checkIsSpecialHu(curr_validated_tiles);
 
     // Skip duidui/pinghu counting for special hu types
@@ -17,6 +24,7 @@ export function c_dui_dui_or_ping_or_kang_kang_hu(
             value: 0,
             log: null,
             type_of_hu,
+            counted: false,
         };
     }
 
@@ -48,7 +56,8 @@ export function c_dui_dui_or_ping_or_kang_kang_hu(
         return {
             value: five_dark_pong_zimo_value,
             log: `坎坎胡 +${five_dark_pong_zimo_value}`,
-            type_of_hu: "kang_kang_hu",
+            type_of_hu: KANG_KANG_HU,
+            counted: true,
         };
     }
 
@@ -61,16 +70,29 @@ export function c_dui_dui_or_ping_or_kang_kang_hu(
         return {
             value: dui_dui_hu_value,
             log: `對對胡 +${dui_dui_hu_value}`,
-            type_of_hu: "dui_dui_hu",
+            type_of_hu: DUI_DUI_HU,
+            counted: true,
         };
     }
 
     if (number_of_pongs === 0 && template_enabled_values.ping_hu_value) {
+        // If no flower and no fan, let c_no_zifa handle it with no_zifa_ping_hu_value
+        if (!has_flower && !has_fan) {
+            return {
+                value: 0,
+                log: null,
+                type_of_hu: PING_HU,
+                counted: false,
+            };
+        }
+
+        // Regular ping hu with flowers/fans
         const ping_hu_value = template_values.ping_hu_value || 0;
         return {
             value: ping_hu_value,
             log: `平胡 +${ping_hu_value}`,
-            type_of_hu: "ping_hu",
+            type_of_hu: PING_HU,
+            counted: true,
         };
     }
 
@@ -78,5 +100,6 @@ export function c_dui_dui_or_ping_or_kang_kang_hu(
         value: 0,
         log: null,
         type_of_hu,
+        counted: false,
     };
 }

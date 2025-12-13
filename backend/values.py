@@ -29,7 +29,7 @@ dark_four_turtle_value = 5
 ping_hu_value = 5 #done
 less_one_door_value = 5 #done
 break_waist_value = 5 #done
-noFlower_noZFB_nowind_value_add_on = 3 #done
+no_zifa = 3 #done
 five_door_value = 5 #done
 three_sister_value = 5 #done
 

@@ -54,5 +54,6 @@ export function c_sister(
     return {
         value: total_value,
         log: log.length > 0 ? log : null,
+        counted: total_value > 0,
     };
 }
