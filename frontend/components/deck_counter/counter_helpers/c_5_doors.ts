@@ -1,5 +1,5 @@
 import { ValidatedDeck, CounterResult } from "@/types/counter";
-import { MST_DICT, ZFB_DICT, WIND_DICT } from "@/constants/dictionary";
+import { MST_DICT, ZFB_DICT, WIND_DICT, FLOWER_HU } from "@/constants/dictionary";
 import { checkIsSpecialHu } from "@/utils/mj_helpers";
 
 export function c_5_doors(
@@ -7,7 +7,7 @@ export function c_5_doors(
     template_values: Record<string, number>,
     template_enabled_values: Record<string, boolean>
 ): CounterResult {
-    const is_special_hu = checkIsSpecialHu(curr_validated_tiles);
+    const is_special_hu = checkIsSpecialHu(curr_validated_tiles) || curr_validated_tiles.hu_type == FLOWER_HU;
     if (is_special_hu) {
         return {
             value: 0,

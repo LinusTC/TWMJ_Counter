@@ -1,4 +1,4 @@
-import { KANG_KANG_HU, DUI_DUI_HU, PING_HU } from "@/constants/dictionary";
+import { KANG_KANG_HU, DUI_DUI_HU, PING_HU, FLOWER_HU } from "@/constants/dictionary";
 import { ValidatedDeck, DuiDuiResult } from "@/types/counter";
 import { checkIsSpecialHu } from "@/utils/mj_helpers";
 
@@ -16,7 +16,7 @@ export function c_dui_dui_or_ping_or_kang_kang_hu(
         | typeof DUI_DUI_HU
         | typeof PING_HU
         | null = null;
-    const is_special_hu = checkIsSpecialHu(curr_validated_tiles);
+    const is_special_hu = checkIsSpecialHu(curr_validated_tiles) || curr_validated_tiles.hu_type == FLOWER_HU;
 
     // Skip duidui/pinghu counting for special hu types
     if (is_special_hu) {

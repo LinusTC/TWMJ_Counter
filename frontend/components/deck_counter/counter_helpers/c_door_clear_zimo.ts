@@ -1,3 +1,4 @@
+import { FLOWER_HU } from "@/constants/dictionary";
 import { ValidatedDeck, CounterResult } from "@/types/counter";
 import { checkIsSpecialHu } from "@/utils/mj_helpers";
 
@@ -8,7 +9,7 @@ export function c_door_clear_zimo(
     template_values: Record<string, number>,
     template_enabled_values: Record<string, boolean>
 ): CounterResult {
-    const is_special_hu = checkIsSpecialHu(curr_validated_tiles);
+    const is_special_hu = checkIsSpecialHu(curr_validated_tiles) || curr_validated_tiles.hu_type == FLOWER_HU;
 
     if (
         myself_mo &&

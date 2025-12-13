@@ -41,8 +41,7 @@ export function checkIsSpecialHu(validatedDeck: ValidatedDeck): boolean {
     return (
         huType === SIXTEEN_BD_HU ||
         huType === THIRTEEN_WAIST_HU ||
-        huType === LIGU_HU ||
-        huType === FLOWER_HU
+        huType === LIGU_HU
     );
 }
 

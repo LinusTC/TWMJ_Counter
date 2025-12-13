@@ -1,5 +1,5 @@
 import { ValidatedDeck, CounterResult } from "@/types/counter";
-import { checkIsSpecialHu, findTilesThatCompleteSet } from "@/utils/mj_helpers";
+import { findTilesThatCompleteSet } from "@/utils/mj_helpers";
 import { SHANG_DICT, EYES_DICT, PONG_DICT } from "@/constants/dictionary";
 
 export function c_duk_duk_jia_duk_dui_pong(

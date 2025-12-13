@@ -1,6 +1,6 @@
 import { TileCount, ValidatedDeck, CounterResult } from "@/types/counter";
 import { checkIsSpecialHu } from "@/utils/mj_helpers";
-import { THIRTEEN_WAIST_HU, JOKER_DICT } from "@/constants/dictionary";
+import { THIRTEEN_WAIST_HU, JOKER_DICT, FLOWER_HU } from "@/constants/dictionary";
 
 export function c_gong_or_4_turtle(
     curr_validated_tiles: ValidatedDeck,
@@ -9,7 +9,7 @@ export function c_gong_or_4_turtle(
     template_enabled_values: Record<string, boolean>
 ): CounterResult {
     // Thirteen waist can technically have 4 turtle
-    const is_special_hu = checkIsSpecialHu(curr_validated_tiles);
+    const is_special_hu = checkIsSpecialHu(curr_validated_tiles) || curr_validated_tiles.hu_type == FLOWER_HU;
     if (is_special_hu && curr_validated_tiles.hu_type !== THIRTEEN_WAIST_HU) {
         return { value: 0, log: null, counted: false };
     }

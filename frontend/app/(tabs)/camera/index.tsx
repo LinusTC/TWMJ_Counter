@@ -29,6 +29,7 @@ import Results from "@/components/camera_helpers/Results";
 import EditDetectedTilesModal from "@/components/camera_helpers/EditDetectedTilesModal";
 import SelectWinningTileModal from "@/components/camera_helpers/SelectWinningTileModal";
 import { checkIsSpecialHu } from "@/utils/mj_helpers";
+import { FLOWER_HU } from "@/constants/dictionary";
 
 export default function Camera() {
     const [permission, requestPermission] = useCameraPermissions();
@@ -107,13 +108,19 @@ export default function Camera() {
 
                 const validator = new DeckValidator(tileCount);
                 const isValid = validator.fullCheck();
-                if (isValid && validator.possibleDecks.length > 0) {
-                    const isSpecialHu = checkIsSpecialHu(
-                        validator.possibleDecks[0]
-                    );
-                    if (isSpecialHu && !doorClear) {
-                        setDoorClear(true);
-                        return;
+
+                // Check if any deck is a special hu and auto-set doorClear
+                // We check all possible decks since the highest value one might be a special hu
+                if (
+                    isValid &&
+                    validator.possibleDecks.length > 0 &&
+                    !doorClear
+                ) {
+                    for (const deck of validator.possibleDecks) {
+                        if (checkIsSpecialHu(deck)) {
+                            setDoorClear(true);
+                            return;
+                        }
                     }
                 }
 
