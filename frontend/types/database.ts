@@ -11,8 +11,8 @@ export interface UserSettings {
 export interface ScoringTemplate {
     id: number;
     name: string;
-    rules: Record<ValueConstant['key'], number>;
-    rules_enabled: Record<ValueConstant['key'], boolean>;
+    rules: Record<ValueConstant["key"], number>;
+    rules_enabled: Record<ValueConstant["key"], boolean>;
     is_default: boolean;
     created_at: string;
 }

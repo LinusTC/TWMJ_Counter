@@ -27,7 +27,10 @@ export default function TabsLayout() {
                 const focusedRouteName =
                     getFocusedRouteNameFromRoute(route) ?? "index";
                 const shouldHideTabBar =
-                    route.name === "play" && focusedRouteName === "in-game";
+                    route.name === "play" && (
+                        focusedRouteName === "in-game" ||
+                        focusedRouteName === "game_settings"
+                    );
 
                 return {
                     tabBarStyle: shouldHideTabBar
