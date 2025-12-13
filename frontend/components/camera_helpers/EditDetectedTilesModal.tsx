@@ -8,6 +8,7 @@ import {
     StyleSheet,
 } from "react-native";
 import { Image } from "expo-image";
+import * as Haptics from "expo-haptics";
 import { DISPLAY_TILE_SIZE, tileImageMap } from "@/constants/tile_images";
 import {
     M_DICT,
@@ -42,11 +43,13 @@ export default function EditDetectedTilesModal({
 
     // Handle adding a tile from dictionary
     const handleAddTile = (tileKey: string) => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
         setTiles([...tiles, tileKey]);
     };
 
     // Handle removing a tile from detected tiles
     const handleRemoveTile = (index: number) => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
         const newTiles = tiles.filter((_, i) => i !== index);
         setTiles(newTiles);
     };
@@ -64,6 +67,7 @@ export default function EditDetectedTilesModal({
     };
 
     const handleClearAll = () => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
         setTiles([]);
     };
 

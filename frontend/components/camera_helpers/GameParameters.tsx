@@ -8,6 +8,7 @@ import {
     Switch,
 } from "react-native";
 import { Image } from "expo-image";
+import * as Haptics from "expo-haptics";
 import { WIND_DICT, SEAT_DICT, WIND_LABELS } from "@/constants/dictionary";
 import { DISPLAY_TILE_SIZE, tileImageMap } from "@/constants/tile_images";
 import { ScoringTemplate } from "@/types/database";
@@ -265,16 +266,20 @@ export default function GameParameters({
                 <View style={styles.numberWheelContainer}>
                     <Pressable
                         style={styles.numberButton}
-                        onPress={() =>
-                            onLumZhuangChange(Math.max(0, lumZhuang - 1))
-                        }
+                        onPress={() => {
+                            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                            onLumZhuangChange(Math.max(0, lumZhuang - 1));
+                        }}
                     >
                         <Text style={styles.numberButtonText}>−</Text>
                     </Pressable>
                     <Text style={styles.numberDisplay}>{lumZhuang}</Text>
                     <Pressable
                         style={styles.numberButton}
-                        onPress={() => onLumZhuangChange(lumZhuang + 1)}
+                        onPress={() => {
+                            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                            onLumZhuangChange(lumZhuang + 1);
+                        }}
                     >
                         <Text style={styles.numberButtonText}>+</Text>
                     </Pressable>
