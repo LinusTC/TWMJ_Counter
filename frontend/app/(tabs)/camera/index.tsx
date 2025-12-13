@@ -29,15 +29,12 @@ import Results from "@/components/camera_helpers/Results";
 import EditDetectedTilesModal from "@/components/camera_helpers/EditDetectedTilesModal";
 import SelectWinningTileModal from "@/components/camera_helpers/SelectWinningTileModal";
 import { checkIsSpecialHu } from "@/utils/mj_helpers";
-import { FLOWER_HU } from "@/constants/dictionary";
 
 export default function Camera() {
     const [permission, requestPermission] = useCameraPermissions();
     const [capturedImage, setCapturedImage] = useState<string | null>(null);
     const [detectedTiles, setDetectedTiles] = useState<DetectedTile[]>([]);
-    const [countingResults, setCountingResults] = useState<base_results | null>(
-        null
-    );
+    const [countingResults, setCountingResults] = useState<base_results | null>(null);
     const [winnerSeat, setWinnerSeat] = useState<number>(1);
     const [currentWind, setCurrentWind] = useState<string>("east");
     const [winningTile, setWinningTile] = useState<string>("");
@@ -47,14 +44,12 @@ export default function Camera() {
     const [isZhuang, setIsZhuang] = useState<boolean>(false);
     const [lumZhuang, setlumZhuang] = useState<number>(0);
     const [templates, setTemplates] = useState<ScoringTemplate[]>([]);
-    const [selectedTemplateId, setSelectedTemplateId] = useState<number | null>(
-        null
-    );
+    const [selectedTemplateId, setSelectedTemplateId] = useState<number | null>(null);
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
-    const [showWinningTileModal, setShowWinningTileModal] =
-        useState<boolean>(false);
+    const [showWinningTileModal, setShowWinningTileModal] = useState<boolean>(false);
     const [imageRotation, setImageRotation] = useState<number>(0);
     const cameraRef = useRef<CameraView>(null);
+    const hasAutoSetDoorClear = useRef<boolean>(false);
 
     useEffect(() => {
         if (!permission) {
@@ -109,16 +104,15 @@ export default function Camera() {
                 const validator = new DeckValidator(tileCount);
                 const isValid = validator.fullCheck();
 
-                // Check if any deck is a special hu and auto-set doorClear
-                // We check all possible decks since the highest value one might be a special hu
                 if (
                     isValid &&
                     validator.possibleDecks.length > 0 &&
-                    !doorClear
+                    !hasAutoSetDoorClear.current
                 ) {
                     for (const deck of validator.possibleDecks) {
                         if (checkIsSpecialHu(deck)) {
                             setDoorClear(true);
+                            hasAutoSetDoorClear.current = true;
                             return;
                         }
                     }
@@ -272,6 +266,7 @@ export default function Camera() {
         setCountingResults(null);
         setWinningTile("");
         setImageRotation(0);
+        hasAutoSetDoorClear.current = false;
     };
 
     const rotateImage = () => {

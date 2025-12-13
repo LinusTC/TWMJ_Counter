@@ -227,6 +227,7 @@ export default function GameParameters({
                     value={doorClear}
                     onValueChange={onDoorClearChange}
                     trackColor={{ true: "#166b60", false: "#d1d5db" }}
+                    thumbColor="#fff"
                     ios_backgroundColor="#d1d5db"
                 />
             </View>

@@ -231,7 +231,6 @@ export class BaseCounter {
             const has_fan = fan_result.hasFan;
             const counted_fan_pos = fan_result.countedPos;
 
-            console.log(has_fan, has_flower);
             //ping hu or dui dui hu
             const dui_dui_results = c_dui_dui_or_ping_or_kang_kang_hu(
                 this.curr_validated_tiles,
