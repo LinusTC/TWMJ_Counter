@@ -11,6 +11,9 @@ export default function InGame() {
     function openGameSettings() {
         router.push({
             pathname: "/play/game_settings",
+            params: {
+                game: JSON.stringify(game),
+            },
         });
     }
 
